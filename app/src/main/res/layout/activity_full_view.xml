@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.FullViewActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
+
+    <ImageView
+        android:id="@+id/bookmark_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/my_bookmarks"
+        android:padding="@dimen/_10sdp"
+        android:src="@drawable/ic_bookmark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_profile_pic"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="99dp"
+        app:cardElevation="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/profile_pic_holder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/user"
+            android:scaleType="centerCrop" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textViewUserFullName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="7dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/hello_user_fullname"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/card_profile_pic"
+        app:layout_constraintTop_toTopOf="@+id/card_profile_pic" />
+
+    <TextView
+        android:id="@+id/textViewUserName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/user123"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewUserFullName"
+        app:layout_constraintStart_toStartOf="@+id/textViewUserFullName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUserFullName" />
+
+    <TextView
+        android:id="@+id/textViewPostTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/montserrat_light"
+        android:text="@string/_12_min_ago"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewUserName"
+        app:layout_constraintStart_toStartOf="@+id/card_profile_pic"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
+
+    <TextView
+        android:id="@+id/post_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/dummy_text"
+        android:textAlignment="viewStart"
+        android:textColor="@color/light_grey"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPostTime" />
+
+    <!-- Image Grid -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imageRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="@+id/post_text"
+        app:layout_constraintStart_toStartOf="@+id/post_text"
+        app:layout_constraintTop_toBottomOf="@+id/post_text"
+        app:spanCount="3" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/replies_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_reply_post"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:weightSum="4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageRecycler">
+
+        <TextView
+            android:id="@+id/views"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="6dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:padding="4dp"
+            android:text="@string/_300"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_12ssp"
+            app:drawableStartCompat="@drawable/ic_views" />
+
+        <TextView
+            android:id="@+id/comments"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="6dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:padding="3dp"
+            android:text="@string/_300"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_12ssp"
+            app:drawableStartCompat="@drawable/ic_replies" />
+
+        <TextView
+            android:id="@+id/likes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="6dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:padding="3dp"
+            android:text="@string/_300"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_12ssp"
+            app:drawableStartCompat="@drawable/ic_likes" />
+
+        <TextView
+            android:id="@+id/dislikes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="6dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:padding="3dp"
+            android:text="@string/_300"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_12ssp"
+            app:drawableStartCompat="@drawable/ic_dislike" />
+
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_reply_post"
+        android:layout_width="@dimen/_160sdp"
+        android:layout_height="@dimen/_38sdp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/blue_button"
+        android:elevation="3dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/reply_to_post"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+         />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

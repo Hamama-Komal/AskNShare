@@ -5,16 +5,37 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_black"
-        android:text="Hello World!"
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <me.ibrahimsn.lib.SmoothBottomBar
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:iconSize="23dp"
+        app:textSize="10sp"
+        app:itemFontFamily="@font/montserrat_medium"
+        app:textColor="@color/app_dark_blue"
+        app:iconTintActive="@color/app_dark_blue"
+        app:iconTint="@color/app_dark_blue"
+        app:indicatorColor="@color/app_light_blue"
+        app:backgroundColor="@color/app_grey"
+        android:layout_marginHorizontal="7dp"
+        app:cornerRadius="12dp"
+        android:layout_marginBottom="7dp"
+        app:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        tools:ignore="SmallSp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

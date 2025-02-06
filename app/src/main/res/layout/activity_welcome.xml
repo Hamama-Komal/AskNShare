@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_light_blue"
+    tools:context=".ui.activities.WelcomeActivity">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_500sdp"
+        android:background="@drawable/below_rounded_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/_190sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/app_logo"
+        android:padding="@dimen/_20sdp"
+        android:src="@drawable/app_logo_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/welcome_vector"
+        android:layout_width="@dimen/_230sdp"
+        android:layout_height="@dimen/_180sdp"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:contentDescription="@string/welcome_vector"
+        android:padding="@dimen/_20sdp"
+        android:src="@drawable/welcome_vector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginEnd="16dp"
+        android:textAlignment="center"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/welcome_to_asknshare"
+        android:textColor="@color/app_medium_blue"
+        android:textSize="@dimen/_18ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_vector" />
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="@dimen/_16sdp"
+        android:fontFamily="@font/montserrat_light"
+        android:text="@string/welcome_decription"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/_15ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_login"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_42sdp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/blue_button"
+        android:elevation="5dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_20ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_register"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_42sdp"
+        android:background="@drawable/grey_stroke_button"
+        android:elevation="5dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/register"
+        android:textAllCaps="false"
+        android:textColor="@color/app_blue"
+        android:textSize="@dimen/_20ssp"
+        app:layout_constraintEnd_toEndOf="@+id/button_login"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/button_login"
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

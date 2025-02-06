@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_140sdp"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    app:cardBackgroundColor="@color/app_grey"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingVertical="10dp">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            app:cardCornerRadius="99dp">
+
+            <ImageView
+                android:id="@+id/leader_pic_holder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/user"
+                android:contentDescription="@string/leader_pic"
+                android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/textView_leader_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/user123"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp" />
+
+        <TextView
+            android:id="@+id/textView_leader_points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/_200_points"
+            android:textAlignment="center"
+            android:textColor="@color/light_grey"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:id="@+id/textView_leader_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="@string/legend"
+            android:textAlignment="center"
+            android:textColor="@color/app_dark_blue"
+            android:textSize="@dimen/_12sdp"
+            app:drawableStartCompat="@drawable/ic_reward" />
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

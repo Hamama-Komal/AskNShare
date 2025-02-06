@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="20dp"
+    tools:context=".ui.fragments.ProfileSetupSecondFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:boxBackgroundColor="#2EFFFFFF"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="@color/app_medium_blue"
+        app:boxStrokeWidth="3dp"
+        app:hintEnabled="true"
+        app:hintTextColor="@color/app_medium_blue"
+        app:startIconDrawable="@drawable/ic_expert">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textfield_expertise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/area_of_expertise"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textCursorDrawable="@color/app_medium_blue"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/montserrat" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:boxBackgroundColor="#2EFFFFFF"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="@color/app_medium_blue"
+        app:boxStrokeWidth="3dp"
+        app:hintEnabled="true"
+        app:hintTextColor="@color/app_medium_blue"
+        app:startIconDrawable="@drawable/ic_interest">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textfield_interest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/interest_hobbies"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textCursorDrawable="@color/app_medium_blue"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/montserrat" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:boxBackgroundColor="#2EFFFFFF"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="@color/app_medium_blue"
+        app:boxStrokeWidth="3dp"
+        app:hintEnabled="true"
+        app:hintTextColor="@color/app_medium_blue"
+        app:startIconDrawable="@drawable/ic_insitution">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textfield_org"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/institution_organization"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textCursorDrawable="@color/app_medium_blue"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/montserrat"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:boxBackgroundColor="#2EFFFFFF"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="@color/app_medium_blue"
+        app:boxStrokeWidth="3dp"
+        app:hintEnabled="true"
+        app:hintTextColor="@color/app_medium_blue"
+        app:startIconDrawable="@drawable/ic_location">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textfield_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/location"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textCursorDrawable="@color/app_medium_blue"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/montserrat" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+</LinearLayout>

@@ -1,25 +1,22 @@
-package com.example.asknshare
+package com.example.asknshare.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
-import com.example.asknshare.databinding.ActivitySplashBinding
+import com.example.asknshare.R
+import com.example.asknshare.databinding.ActivityWelcomeBinding
 
-class SplashActivity : AppCompatActivity() {
+class WelcomeActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySplashBinding
+    private lateinit var binding: ActivityWelcomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivitySplashBinding.inflate(layoutInflater)
+        binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -27,15 +24,19 @@ class SplashActivity : AppCompatActivity() {
             insets
         }
 
-        YoYo.with(Techniques.FadeIn)
-            .duration(2000)
-            .playOn(binding.logo)
-
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+        // Move To Login Activity
+        binding.buttonLogin.setOnClickListener {
+            val intent = Intent(this@WelcomeActivity, LoginActivity::class.java)
             startActivity(intent)
-            finish()
-        }, 2500)
+        }
+
+        // Move To Register Activity
+        binding.buttonRegister.setOnClickListener {
+            val intent = Intent(this@WelcomeActivity, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+
+
     }
 }

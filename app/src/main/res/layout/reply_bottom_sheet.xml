@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="7dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/reply_to"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_profile_pic"
+            android:layout_width="@dimen/_33sdp"
+            android:layout_height="@dimen/_33sdp"
+            app:cardCornerRadius="99dp"
+            app:cardElevation="2dp">
+
+            <ImageView
+                android:id="@+id/profile_pic_holder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/user"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="@string/user123"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:background="@drawable/light_blue_stroke_shape"
+        android:elevation="3dp"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <EditText
+            android:id="@+id/questionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:fontFamily="@font/montserrat_semibold"
+            android:hint="@string/title_here"
+            android:maxLines="2"
+            android:padding="12dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/questionDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:fontFamily="@font/montserrat"
+            android:gravity="start"
+            android:hint="@string/ask_anything"
+            android:maxLines="7"
+            android:minHeight="120dp"
+            android:padding="12dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/button_publish_post"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.047">
+
+        <LinearLayout
+            android:id="@+id/buttn_gallery"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="@drawable/light_blue_stroke_shape"
+            android:elevation="2dp"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_gallery" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button_camera"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="@drawable/light_blue_stroke_shape"
+            android:elevation="2dp"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_capture" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button_tag"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="@drawable/light_blue_stroke_shape"
+            android:elevation="2dp"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_tag" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button_attachment"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="@drawable/light_blue_stroke_shape"
+            android:elevation="2dp"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_attachment" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button_settings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="@drawable/light_blue_stroke_shape"
+            android:elevation="2dp"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_settings" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_publish_reply"
+        android:layout_width="@dimen/_160sdp"
+        android:layout_height="@dimen/_38sdp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/blue_button"
+        android:elevation="5dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/publish_reply"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16ssp"
+        app:layout_constraintBottom_toTopOf="@+id/button_discard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</LinearLayout>

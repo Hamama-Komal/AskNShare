@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="12dp"
+    android:padding="10dp"
+    android:elevation="1dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/blue_stroke_shape"
+    android:layout_margin="3dp">
+
+
+    <ImageView
+        android:id="@+id/tag_vector"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/image"
+        android:scaleType="centerCrop"
+        />
+
+
+        <TextView
+            android:id="@+id/tag_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/user123"
+            android:maxLines="1"
+            android:marqueeRepeatLimit="@integer/material_motion_duration_medium_2"
+            android:textAlignment="center"
+            android:textColor="@color/app_dark_blue"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="@+id/textViewUserFullName"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserFullName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserFullName" />
+
+
+
+</LinearLayout>

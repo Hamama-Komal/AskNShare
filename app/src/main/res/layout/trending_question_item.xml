@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="12dp"
+    android:padding="10dp"
+    android:elevation="3dp"
+    android:orientation="vertical"
+    android:background="@drawable/blue_stroke_shape"
+    android:layout_margin="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_profile_pic"
+            android:layout_width="@dimen/_33sdp"
+            android:layout_height="@dimen/_33sdp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            app:cardCornerRadius="99dp"
+            app:cardElevation="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/profile_pic_holder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/user"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textViewUserFullName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="7dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/hello_user_fullname"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toStartOf="@+id/textViewPostTime"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/card_profile_pic"
+            app:layout_constraintTop_toTopOf="@+id/card_profile_pic" />
+
+        <TextView
+            android:id="@+id/textViewUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/user123"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintEnd_toEndOf="@+id/textViewUserFullName"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserFullName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserFullName" />
+
+        <TextView
+            android:id="@+id/textViewPostTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/montserrat_light"
+            android:text="@string/_12_min_ago"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/post_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/dummy_text"
+            android:textAlignment="viewStart"
+            android:maxLines="7"
+            android:textColor="@color/light_grey"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
+
+
+      <!--  &lt;!&ndash; Image Grid &ndash;&gt;
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/imageRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="@+id/post_text"
+            app:layout_constraintStart_toStartOf="@+id/post_text"
+            app:layout_constraintTop_toBottomOf="@+id/post_text"
+            app:spanCount="3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:padding="5dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageRecycler">
+
+            <TextView
+                android:id="@+id/views"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="6dp"
+                android:textSize="@dimen/_12ssp"
+                android:padding="4dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/dark_grey"
+                android:text="@string/_300"
+                app:drawableStartCompat="@drawable/ic_views" />
+
+            <TextView
+                android:id="@+id/comments"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="6dp"
+                android:padding="3dp"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/dark_grey"
+                android:text="@string/_300"
+                app:drawableStartCompat="@drawable/ic_replies" />
+
+            <TextView
+                android:id="@+id/likes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="6dp"
+                android:padding="3dp"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/dark_grey"
+                android:text="@string/_300"
+                app:drawableStartCompat="@drawable/ic_likes" />
+
+            <TextView
+                android:id="@+id/dislikes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/_12ssp"
+                android:drawablePadding="6dp"
+                android:padding="3dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/dark_grey"
+                android:text="@string/_300"
+                app:drawableStartCompat="@drawable/ic_dislike" />
+
+
+
+        </LinearLayout>-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</LinearLayout>
