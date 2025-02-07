@@ -31,7 +31,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="match_parent"
@@ -163,6 +162,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/InputPasswordLayout"
             style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -271,7 +271,6 @@
 
     </LinearLayout>
 
-
     <TextView
         android:id="@+id/textViewText"
         android:layout_width="wrap_content"
@@ -303,6 +302,20 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textViewText"
         app:layout_constraintTop_toTopOf="@+id/textViewText" />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:SpinKit_Style="FoldingCube"
+        app:SpinKit_Color="@color/app_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

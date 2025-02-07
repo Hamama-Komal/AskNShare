@@ -1,7 +1,9 @@
 package com.example.asknshare.ui.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +18,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
+    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +35,22 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         binding.buttonLogin.setOnClickListener {
-            //loginUser()
-
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            startActivity(intent)
-            finishAffinity()
+            loginUser()
         }
+
+        binding.InputPasswordLayout.setEndIconOnClickListener {
+            togglePasswordVisibility()
+        }
+
+        binding.textViewRegister.setOnClickListener {
+            navigateToRegisterScreen()
+        }
+    }
+
+    private fun navigateToRegisterScreen() {
+        val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+        startActivity(intent)
+        finishAffinity()
     }
 
     private fun loginUser() {
@@ -81,6 +94,18 @@ class LoginActivity : AppCompatActivity() {
 
     private fun isValidPassword(password: String): Boolean {
         return password.length >= 7
+    }
 
+
+    private fun togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            binding.textfieldPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.InputPasswordLayout.endIconDrawable = getDrawable(R.drawable.ic_visible)
+        } else {
+            binding.textfieldPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            binding.InputPasswordLayout.endIconDrawable = getDrawable(R.drawable.ic_hide)
+        }
+        isPasswordVisible = !isPasswordVisible
+        binding.textfieldPassword.setSelection(binding.textfieldPassword.text?.length ?: 0)
     }
 }

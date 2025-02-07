@@ -27,4 +27,12 @@ class DataStoreHelper(private val context: Context) {
         .map { preferences ->
             preferences[IS_REGISTERED_KEY] ?: false
         }
+
+    // Function to clear all stored preferences
+    suspend fun clearDataStore() {
+        context.dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
 }
+

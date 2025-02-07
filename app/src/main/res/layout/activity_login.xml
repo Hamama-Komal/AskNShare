@@ -125,6 +125,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/InputPasswordLayout"
             style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -235,7 +236,7 @@
         app:layout_constraintVertical_bias="0.518" />
 
     <TextView
-        android:id="@+id/textViewSignUp"
+        android:id="@+id/textViewRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_medium"

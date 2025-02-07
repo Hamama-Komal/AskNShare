@@ -81,4 +81,7 @@
     <string name="reply_to">Reply To</string>
     <string name="next">Next</string>
     <string name="ask1">Ask</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_logout">Confirm Logout</string>
 </resources>

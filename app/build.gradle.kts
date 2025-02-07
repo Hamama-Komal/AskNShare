@@ -57,6 +57,8 @@ dependencies {
 
     // Animation
     implementation("com.daimajia.androidanimations:library:2.4@aar")
+    // SpinKit
+    implementation("com.github.ybq:Android-SpinKit:1.4.0")
     // ssp
     implementation(libs.intuit.ssp.android)
     // sdp
