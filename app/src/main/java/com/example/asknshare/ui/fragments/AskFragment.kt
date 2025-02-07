@@ -11,6 +11,7 @@ import com.example.asknshare.ui.activities.FullViewActivity
 import com.example.asknshare.ui.activities.PostQuestionActivity
 import com.example.asknshare.databinding.FragmentAskBinding
 import com.example.asknshare.databinding.FragmentSearchBinding
+import com.example.asknshare.ui.activities.SetUpProfileActivity
 
 class AskFragment : Fragment() {
 
@@ -31,6 +32,12 @@ class AskFragment : Fragment() {
          binding.buttonPostAnonymous.setOnClickListener {
             startActivity(Intent(context, FullViewActivity::class.java))
         }
+
+         binding.buttonAi.setOnClickListener {
+            startActivity(Intent(context, SetUpProfileActivity::class.java))
+        }
+
+
 
 
 

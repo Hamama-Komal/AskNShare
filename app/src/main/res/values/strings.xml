@@ -81,4 +81,12 @@
     <string name="reply_to">Reply To</string>
     <string name="next">Next</string>
     <string name="ask1">Ask</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_logout">Confirm Logout</string>
+    <string name="select_from_gallery">Select from Gallery</string>
+    <string name="capture_from_camera">Capture from Camera</string>
+    <string name="select_your_interests">Select Your Interests</string>
+    <string name="select_your_expertise">Select Your  Expertise</string>
+    <string name="done">Done</string>
 </resources>

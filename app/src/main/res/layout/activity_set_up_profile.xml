@@ -11,7 +11,7 @@
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_190sdp"
+        android:layout_height="@dimen/_170sdp"
         android:background="@drawable/below_rounded_shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,13 +33,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewPageNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:padding="7dp"
-        android:text="1/2"
+        android:text="@string/skip"
+        android:textSize="@dimen/_14ssp"
+        android:fontFamily="@font/montserrat"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,23 +61,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
-    <TextView
-        android:id="@+id/textViewDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_16sdp"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="@font/montserrat_medium"
-        android:text="@string/user123"
-        android:textAlignment="center"
-        android:textColor="@color/dark_grey"
-        android:textSize="@dimen/_15ssp"
-        app:layout_constraintBottom_toTopOf="@+id/card_profile_pic"
-        app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textViewTitle"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_profile_pic"
@@ -105,9 +90,10 @@
         app:cardElevation="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/card_profile_pic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toStartOf="@+id/card_profile_pic"
-        app:layout_constraintTop_toBottomOf="@+id/view">
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintVertical_bias="1.0">
 
         <ImageView
             android:layout_width="match_parent"
@@ -117,74 +103,58 @@
             android:scaleType="fitXY" />
     </androidx.cardview.widget.CardView>
 
-    <!--<androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_marginVertical="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_save_changes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_profile_pic"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/dots_indicator"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="16dp"
+        app:dotsColor="@color/app_blue"
+        app:dotsCornerRadius="8dp"
+        app:dotsSize="16dp"
+        app:dotsSpacing="3dp"
+        app:dotsWidthFactor="2.5"
+        app:layout_constraintBottom_toBottomOf="@+id/button_save_changes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_save_changes"
+        app:progressMode="true"
+        app:selectedDotColor="@color/app_blue" />
 
-        <Button
-            android:id="@+id/btnSkip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Skip"/>
 
-        <Button
-            android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Next"/>
-    </LinearLayout>-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/blue_button"
+        android:elevation="5dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/done"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/dots_indicator" />
 
-
-     <androidx.viewpager2.widget.ViewPager2
-         android:id="@+id/viewpager"
-         android:layout_width="0dp"
-         android:layout_height="0dp"
-         app:layout_constraintBottom_toTopOf="@+id/button_skip"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/card_profile_pic" />
-
-     <androidx.appcompat.widget.AppCompatButton
-         android:id="@+id/button_next"
-         android:layout_width="@dimen/_90sdp"
-         android:layout_height="@dimen/_38sdp"
-         android:layout_gravity="center"
-         android:layout_marginEnd="16dp"
-         android:layout_marginBottom="16dp"
-         android:background="@drawable/blue_button"
-         android:elevation="5dp"
-         android:fontFamily="@font/montserrat"
-         android:text="@string/next"
-         android:textAllCaps="false"
-         android:textColor="@color/white"
-         android:textSize="@dimen/_18ssp"
-         app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintEnd_toEndOf="parent" />
-
-     <androidx.appcompat.widget.AppCompatButton
-         android:id="@+id/button_skip"
-         android:layout_width="@dimen/_90sdp"
-         android:layout_height="@dimen/_38sdp"
-         android:layout_marginStart="16dp"
-         android:layout_marginBottom="16dp"
-         android:layout_gravity="center"
-         android:background="@drawable/grey_stroke_button"
-         android:elevation="5dp"
-         android:fontFamily="@font/montserrat"
-         android:text="@string/skip"
-         android:textAllCaps="false"
-         android:textColor="@color/app_medium_blue"
-         android:textSize="@dimen/_18ssp"
-         app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

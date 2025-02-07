@@ -125,9 +125,12 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/InputPasswordLayout"
             style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_visible"
             android:layout_marginVertical="8dp"
             app:boxBackgroundColor="#2E6CD9D3"
             app:boxBackgroundMode="filled"
@@ -235,7 +238,7 @@
         app:layout_constraintVertical_bias="0.518" />
 
     <TextView
-        android:id="@+id/textViewSignUp"
+        android:id="@+id/textViewRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_medium"
@@ -249,5 +252,20 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textViewText"
         app:layout_constraintTop_toTopOf="@+id/textViewText" />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_kit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:elevation="10dp"
+        app:SpinKit_Style="WanderingCubes"
+        app:SpinKit_Color="@color/app_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

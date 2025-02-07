@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="10dp"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/select_from_gallery"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/montserrat_medium"
+        android:textColor="@color/dark_grey"
+        app:drawableStartCompat="@drawable/ic_gallery" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/tv_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        app:drawableStartCompat="@drawable/ic_capture"
+        android:text="@string/capture_from_camera"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/montserrat_medium"
+        android:textColor="@color/dark_grey"
+         />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

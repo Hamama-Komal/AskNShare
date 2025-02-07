@@ -1,7 +1,11 @@
 package com.example.asknshare.ui.activities
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.transition.Visibility
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,10 +16,15 @@ import com.example.asknshare.R
 import com.example.asknshare.ui.adapters.ProfileViewPagerAdapter
 import com.example.asknshare.databinding.ActivityRegisterBinding
 import com.example.asknshare.databinding.ActivitySetUpProfileBinding
+import com.example.asknshare.utils.Constants
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class SetUpProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetUpProfileBinding
+    private lateinit var adapter: ProfileViewPagerAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,62 +38,93 @@ class SetUpProfileActivity : AppCompatActivity() {
         }
 
 
-        val adapter = ProfileViewPagerAdapter(this)
+        setupViewPager()
+        // setupButtonListeners()
+
+        // Handle profile picture upload click
+        binding.cardUploadPic.setOnClickListener {
+            showImagePickerBottomSheet()
+        }
+
+        // Save the data in Firebase
+        binding.buttonDone.setOnClickListener {
+
+        }
+
+    }
+
+    private fun showImagePickerBottomSheet() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_image_picker, null)
+        bottomSheetDialog.setContentView(view)
+
+        // Handle gallery option
+        view.findViewById<View>(R.id.tv_gallery)?.setOnClickListener {
+            pickImageFromGallery()
+            bottomSheetDialog.dismiss()
+        }
+
+        // Handle camera option
+        view.findViewById<View>(R.id.tv_camera)?.setOnClickListener {
+            captureImageFromCamera()
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.show()
+    }
+
+    private fun pickImageFromGallery() {
+        ImagePicker.with(this)
+            .galleryOnly()
+            .crop()
+            .compress(1024)
+            .start()
+    }
+
+    private fun captureImageFromCamera() {
+        ImagePicker.with(this)
+            .cameraOnly()
+            .crop()
+            .compress(1024)
+            .start()
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == RESULT_OK && data != null) {
+            val imageUri: Uri? = data.data // Get the image URI
+
+            if (imageUri != null) {
+                binding.profilePicHolder.setImageURI(imageUri)
+                Toast.makeText(this, "Image Uploaded!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Error: Image URI is null", Toast.LENGTH_SHORT).show()
+            }
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun setupViewPager() {
+        adapter = ProfileViewPagerAdapter(this)
         binding.viewpager.adapter = adapter
 
-        // Handle page change
+        // Update page number dynamically
         binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                updateButtons(position)
+                updatePageNumber(position)
+               // updateButtons(position)
             }
         })
 
-        // Handle Next Button Click
-        binding.buttonNext.setOnClickListener {
-            if (binding.viewpager.currentItem == 0) {
-                binding.viewpager.currentItem = 1 // Move to Second Fragment
-            } else {
-                Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        // Handle Skip/Back Button Click
-        binding.buttonSkip.setOnClickListener {
-            if (binding.viewpager.currentItem == 1) {
-                binding.viewpager.currentItem = 0 // Move back to First Fragment
-            } else {
-                // Toast.makeText(this, "Skipped!", Toast.LENGTH_SHORT).show()
-             // binding.buttonSkip.visibility =
-            }
-        }
-
-       // setupClickListeners()
+        binding.dotsIndicator.attachTo(binding.viewpager)
     }
 
-    // Update button text dynamically
-    private fun updateButtons(position: Int) {
-        if (position == 0) {
-            binding.buttonSkip.text = "Skip"
-            binding.buttonNext.text = "Next"
-        } else {
-            binding.buttonSkip.text = "Back"
-            binding.buttonNext.text = "Done"
-        }
+    private fun updatePageNumber(position: Int) {
+        binding.textViewPageNumber.text = "${position + 1}"
     }
 
-
-    private fun setupClickListeners() {
-        binding.buttonNext.setOnClickListener {
-            // Handle Next button click
-        }
-
-        binding.buttonSkip.setOnClickListener {
-            // Handle Skip button click
-        }
-
-        binding.cardUploadPic.setOnClickListener {
-            // Handle profile picture upload click
-        }
-    }
 }
