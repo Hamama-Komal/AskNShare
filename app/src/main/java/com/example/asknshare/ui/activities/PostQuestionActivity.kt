@@ -19,8 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.asknshare.R
 import com.example.asknshare.databinding.ActivityPostQuestionBinding
 import com.example.asknshare.ui.adapters.GallaryImageAdapter
-import com.github.dhaval2404.imagepicker.ImagePicker
-import java.io.File
+
 
 class PostQuestionActivity : AppCompatActivity() {
 
