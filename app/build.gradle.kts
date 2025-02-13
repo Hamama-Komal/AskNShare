@@ -29,6 +29,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = false
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -88,6 +89,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
     // implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.20-Beta2")
+
+
 
 
 }
