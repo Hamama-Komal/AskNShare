@@ -5,22 +5,20 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
+
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.asknshare.R
 import com.example.asknshare.databinding.ActivityPostQuestionBinding
 import com.example.asknshare.ui.adapters.GallaryImageAdapter
-import com.github.dhaval2404.imagepicker.ImagePicker
-import java.io.File
+import com.github.drjacky.imagepicker.ImagePicker
+
 
 class PostQuestionActivity : AppCompatActivity() {
 
@@ -50,24 +48,48 @@ class PostQuestionActivity : AppCompatActivity() {
        setupRecyclerView()
 
         binding.buttnGallery.setOnClickListener {
-            openGallery()
+            pickMultipleImages()
+        }
+
+        binding.buttonCamera.setOnClickListener {
+            captureImageFromCamera()
         }
     }
 
-    private fun openGallery() {
-        pickMultipleImages()
+// Image Capture by the Camera
+    private fun captureImageFromCamera() {
+        val intent = ImagePicker.with(this)
+            .cameraOnly()  // Open only the camera
+            .crop()  // Enable cropping
+            .createIntent()
+
+        imagePickerLauncher.launch(intent)
     }
 
-  // Initializes RecyclerView for displaying selected images
-    private fun setupRecyclerView() {
-        galleryAdapter = GallaryImageAdapter(imageList)
-        binding.recylerGalleryImg.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.recylerGalleryImg.adapter = galleryAdapter
-        binding.recylerGalleryImg.visibility = View.GONE // Initially hidden
+    private val imagePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val uri: Uri? = result.data?.data
+                if (uri != null) {
+                   imageList.add(uri) // Set the selected image
+                    galleryAdapter.setSingleImage(uri) // Update RecyclerView with the selected image
+                    // Show RecyclerView if images are selected
+                    if (imageList.isNotEmpty()) {
+                        binding.recylerGalleryImg.visibility = View.VISIBLE
+                    }
+                } else {
+                    Toast.makeText(this, "Error: Image not found", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Image selection failed!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+ // Images Selections from the gallery
+    private fun pickMultipleImages() {
+        pickImagesLauncher.launch("image/*")
     }
 
-    // Handles selected images and updates RecyclerView
     private val pickImagesLauncher = registerForActivityResult(
         ActivityResultContracts.GetMultipleContents()
     ) { uris: List<Uri>? ->
@@ -83,8 +105,14 @@ class PostQuestionActivity : AppCompatActivity() {
         }
     }
 
-    private fun pickMultipleImages() {
-        pickImagesLauncher.launch("image/*")
+
+    // Initializes RecyclerView for displaying selected images
+    private fun setupRecyclerView() {
+        galleryAdapter = GallaryImageAdapter(imageList)
+        binding.recylerGalleryImg.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.recylerGalleryImg.adapter = galleryAdapter
+        binding.recylerGalleryImg.visibility = View.GONE // Initially hidden
     }
 
 }
