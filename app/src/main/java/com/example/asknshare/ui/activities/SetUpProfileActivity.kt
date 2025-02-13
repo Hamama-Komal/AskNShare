@@ -1,29 +1,40 @@
 package com.example.asknshare.ui.activities
 
-import android.annotation.SuppressLint
+
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.transition.Visibility
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.asknshare.R
 import com.example.asknshare.ui.adapters.ProfileViewPagerAdapter
-import com.example.asknshare.databinding.ActivityRegisterBinding
 import com.example.asknshare.databinding.ActivitySetUpProfileBinding
 import com.example.asknshare.utils.Constants
-import com.github.dhaval2404.imagepicker.ImagePicker
+import com.example.asknshare.viewmodels.ProfileSetUpViewModel
+import com.github.drjacky.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import java.io.File
+import java.io.FileOutputStream
+import java.util.UUID
 
 class SetUpProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetUpProfileBinding
     private lateinit var adapter: ProfileViewPagerAdapter
+    private var profileImageUrl: String? = null
+    private val profileSetupViewModel: ProfileSetUpViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +49,8 @@ class SetUpProfileActivity : AppCompatActivity() {
         }
 
 
+        // Setting up fragments
         setupViewPager()
-        // setupButtonListeners()
 
         // Handle profile picture upload click
         binding.cardUploadPic.setOnClickListener {
@@ -48,9 +59,143 @@ class SetUpProfileActivity : AppCompatActivity() {
 
         // Save the data in Firebase
         binding.buttonDone.setOnClickListener {
-
+            showLoading(true)
+            saveUserDataToFirebase()
         }
 
+    }
+
+    private fun saveUserDataToFirebase() {
+        // Retrieve data from ViewModel
+        val username = profileSetupViewModel.username.value?.trim() ?: ""
+        val fullName = profileSetupViewModel.fullName.value?.trim() ?: ""
+        val email = profileSetupViewModel.email.value?.trim() ?: ""
+        val dob = profileSetupViewModel.dob.value?.trim() ?: ""
+        val profession = profileSetupViewModel.profession.value?.trim() ?: ""
+        val expertise = profileSetupViewModel.selectedExpertise.value ?: mutableListOf()
+        val skills = profileSetupViewModel.selectedInterests.value ?: mutableListOf()
+        val location = profileSetupViewModel.location.value?.trim() ?: ""
+        val gender = profileSetupViewModel.gender.value?.trim() ?: ""
+        val organization = profileSetupViewModel.organization.value?.trim() ?: ""
+        val bio = profileSetupViewModel.bio.value?.trim() ?: ""
+
+
+        // Generate a unique user ID
+        val userId = FirebaseDatabase.getInstance().reference.push().key ?: UUID.randomUUID().toString()
+
+        // Upload the profile image to Firebase Storage
+        val imageUri = binding.profilePicHolder.drawable?.let { drawable ->
+            // Convert drawable to Bitmap
+            val bitmap = (drawable.toBitmap())
+            // Save the Bitmap to a temporary file and get its URI
+            saveBitmapToTempFile(bitmap)
+        } // Convert drawable to URI
+        if (imageUri != null) {
+            uploadImageToFirebaseStorage(imageUri, userId, username, fullName, email, dob, profession, expertise, skills, location, gender, organization, bio)
+        } else {
+            saveUserDataToDatabase(
+                userId,
+                username,
+                fullName,
+                email,
+                dob,
+                profession,
+                expertise,
+                skills,
+                location,
+                gender,
+                organization,
+                bio,
+                null
+            )
+        }
+    }
+
+    private fun uploadImageToFirebaseStorage(imageUri: Uri, userId: String, username: String, fullName: String, email: String, dob: String, profession: String, expertise: List<String>, skills: List<String>, location: String, gender: String, organization: String, bio: String) {
+        val storageRef = FirebaseStorage.getInstance().reference.child("profile_images/${userId}.jpg")
+        storageRef.putFile(imageUri)
+            .addOnSuccessListener {
+                // Get the download URL of the uploaded image
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    profileImageUrl = uri.toString()
+                    saveUserDataToDatabase(
+                        userId,
+                        username,
+                        fullName,
+                        email,
+                        dob,
+                        profession,
+                        expertise,
+                        skills,
+                        location,
+                        gender,
+                        organization,
+                        bio,
+                        profileImageUrl
+                    )
+                }.addOnFailureListener {
+                    showLoading(false)
+                    Toast.makeText(this, "Failed to get image URL", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                showLoading(false)
+                Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun saveBitmapToTempFile(bitmap: Bitmap): Uri? {
+        return try {
+            // Create a temporary file in the cache directory
+            val file = File.createTempFile("profile_image", ".jpg", cacheDir)
+            val stream = FileOutputStream(file)
+            // Compress the Bitmap and write it to the file
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.close()
+            // Return the URI of the file
+            Uri.fromFile(file)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun saveUserDataToDatabase(userId: String, username: String, fullName: String, email: String, dob: String, profession: String, expertise: List<String>, skills: List<String>, location: String, gender: String, organization: String, bio: String, imageUrl: String?) {
+        val databaseRef = FirebaseDatabase.getInstance().reference.child("Users").child(userId)
+        val userData = mapOf(
+            Constants.FULL_NAME to fullName,
+            Constants.USER_NAME to username,
+            Constants.EMAIL to email,
+            Constants.PROFILE_PIC to imageUrl,
+            Constants.DOB to dob,
+            Constants.PROFESSION to profession,
+            Constants.EXPERTISE to expertise,
+            Constants.SKILLS to skills,
+            Constants.LOCATION to location,
+            Constants.GENDER to gender,
+            Constants.ORGANIZATION to organization,
+            Constants.BIO to bio,
+            Constants.BOOKMARKED_QUESTIONS to emptyMap<String, Boolean>(), // Initialize as empty
+            Constants.POSTED_ANSWERS to emptyMap<String, Boolean>(),
+            Constants.POSTED_QUESTIONS to emptyMap<String, Boolean>(),
+        )
+
+        databaseRef.setValue(userData)
+            .addOnSuccessListener {
+                showLoading(false)
+                Toast.makeText(this, "Data saved successfully!", Toast.LENGTH_SHORT).show()
+                navigateToHomeScreen()
+            }
+            .addOnFailureListener {
+                showLoading(false)
+                Toast.makeText(this, "Failed to save data", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun navigateToHomeScreen() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun showImagePickerBottomSheet() {
@@ -74,38 +219,37 @@ class SetUpProfileActivity : AppCompatActivity() {
     }
 
     private fun pickImageFromGallery() {
-        ImagePicker.with(this)
-            .galleryOnly()
-            .crop()
-            .compress(1024)
-            .start()
+        val intent = ImagePicker.with(this)
+            .galleryOnly()  // Open only the gallery
+            .crop()  // Enable cropping
+            .createIntent()
+
+        imagePickerLauncher.launch(intent)
     }
 
     private fun captureImageFromCamera() {
-        ImagePicker.with(this)
-            .cameraOnly()
-            .crop()
-            .compress(1024)
-            .start()
+        val intent = ImagePicker.with(this)
+            .cameraOnly()  // Open only the camera
+            .crop()  // Enable cropping
+            .createIntent()
+
+        imagePickerLauncher.launch(intent)
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == RESULT_OK && data != null) {
-            val imageUri: Uri? = data.data // Get the image URI
-
-            if (imageUri != null) {
-                binding.profilePicHolder.setImageURI(imageUri)
-                Toast.makeText(this, "Image Uploaded!", Toast.LENGTH_SHORT).show()
+    private val imagePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val uri: Uri? = result.data?.data
+                if (uri != null) {
+                    binding.profilePicHolder.setImageURI(uri) // Set the selected image
+                    Toast.makeText(this, "Image Uploaded!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Error: Image not found", Toast.LENGTH_SHORT).show()
+                }
             } else {
-                Toast.makeText(this, "Error: Image URI is null", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Image selection failed!", Toast.LENGTH_SHORT).show()
             }
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         }
-    }
 
 
     private fun setupViewPager() {
@@ -124,7 +268,17 @@ class SetUpProfileActivity : AppCompatActivity() {
     }
 
     private fun updatePageNumber(position: Int) {
-        binding.textViewPageNumber.text = "${position + 1}"
+        binding.textViewPageNumber.text = "${position + 1}/3"
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.spinKit.visibility = View.VISIBLE
+            binding.buttonDone.isActivated = false
+        } else {
+            binding.spinKit.visibility = View.GONE
+            binding.buttonDone.isActivated = true
+        }
     }
 
 }

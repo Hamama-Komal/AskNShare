@@ -5,15 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.example.asknshare.R
 import com.example.asknshare.databinding.FragmentProfileSetupSecondBinding
 import com.example.asknshare.databinding.FragmentProfileSetupThirdBinding
+import com.example.asknshare.viewmodels.ProfileSetUpViewModel
 import com.google.android.material.chip.Chip
 
 class ProfileSetupThirdFragment : Fragment() {
 
     private var _binding: FragmentProfileSetupThirdBinding? = null
     private val binding get() = _binding!!
+    // Use the shared ViewModel
+    private val profileSetupViewModel: ProfileSetUpViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,9 +51,10 @@ class ProfileSetupThirdFragment : Fragment() {
             chip.isCheckable = true
             chip.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    println("Selected Interest: $interest")
+                    profileSetupViewModel.updateSelectedInterests(interest, isChecked)
+                   // println("Selected Interest: $interest")
                 } else {
-                    println("Deselected Interest: $interest")
+                  //  println("Deselected Interest: $interest")
                 }
             }
             chipGroup.addView(chip)

@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             fragment?.let { loadFragment(it) }
-            true
+
         }
 
 

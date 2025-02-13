@@ -6,15 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.activityViewModels
 import com.example.asknshare.R
 import com.example.asknshare.databinding.FragmentProfileSetupFirstBinding
 import com.example.asknshare.databinding.FragmentProfileSetupSecondBinding
+import com.example.asknshare.viewmodels.ProfileSetUpViewModel
 import com.google.android.material.chip.Chip
 
 class ProfileSetupSecondFragment : Fragment() {
 
     private var _binding: FragmentProfileSetupSecondBinding? = null
     private val binding get() = _binding!!
+    // Use the shared ViewModel
+    private val profileSetupViewModel: ProfileSetUpViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,9 +60,10 @@ class ProfileSetupSecondFragment : Fragment() {
             chip.isCheckable = true
             chip.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    println("Selected Expertise: $expertise")
+                    profileSetupViewModel.updateSelectedExpertise(expertise, isChecked)
+                   // println("Selected Expertise: $expertise")
                 } else {
-                    println("Deselected Expertise: $expertise")
+                    //println("Deselected Expertise: $expertise")
                 }
             }
             chipGroup.addView(chip)

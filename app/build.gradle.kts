@@ -81,7 +81,8 @@ dependencies {
     // LiveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
     // Image Picker
-    implementation("com.github.dhaval2404:imagepicker:2.1")
+    implementation("com.github.Drjacky:ImagePicker:2.3.22")
+    implementation("androidx.fragment:fragment-ktx:1.6.1")
 
 
 

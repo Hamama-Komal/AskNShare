@@ -73,7 +73,7 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
             showLoading(false)
             if (task.isSuccessful) {
-                handleRegistrationSuccess(email, password, username)
+                handleRegistrationSuccess(email, username)
             } else {
                 handleRegistrationFailure(task.exception?.message)
             }
@@ -105,7 +105,7 @@ class RegisterActivity : AppCompatActivity() {
         return true
     }
 
-    private fun handleRegistrationSuccess(email: String, password: String, username: String) {
+    private fun handleRegistrationSuccess(email: String, username: String) {
         lifecycleScope.launch {
             // Save registration status, email, and username
             dataStoreHelper.saveUserRegistrationStatus(true)
