@@ -4,6 +4,6 @@
     <!-- Selected state -->
     <item android:color="@color/app_dark_blue" android:state_checked="true" />
     <!-- Unselected state -->
-    <item android:color="@color/app_light_blue" android:state_checked="false" />
+    <item android:color ="@color/app_light_blue" android:state_checked="false" />
 
 </selector>
