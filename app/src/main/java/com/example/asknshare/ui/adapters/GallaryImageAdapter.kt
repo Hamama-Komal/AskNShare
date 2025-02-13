@@ -8,10 +8,11 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.asknshare.R
 
-class GallaryImageAdapter (private var imageList: List<Uri>): RecyclerView.Adapter<GallaryImageAdapter.GalleryImageViewHolder>() {
+class GallaryImageAdapter (private var imageList: MutableList<Uri>): RecyclerView.Adapter<GallaryImageAdapter.GalleryImageViewHolder>() {
 
     class GalleryImageViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val imageView: ImageView = view.findViewById(R.id.imageViewPost)
+        val deleteImage: ImageView = view.findViewById(R.id.deleteImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryImageViewHolder {
@@ -25,17 +26,27 @@ class GallaryImageAdapter (private var imageList: List<Uri>): RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: GalleryImageViewHolder, position: Int) {
         holder.imageView.setImageURI(imageList[position])
+        holder.deleteImage.visibility = View.VISIBLE
+
+        holder.deleteImage.setOnClickListener {
+            if (position < imageList.size) {
+                imageList.removeAt(position)  // ✅ Now it should work
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, imageList.size) // Prevent index issues
+            }
+        }
     }
 
     // Function to update the adapter with a Catured Image
     fun setSingleImage(uri: Uri) {
-        imageList = listOf(uri)  // Convert single Uri to a list
+        imageList.clear()
+        imageList.add(uri)
         notifyDataSetChanged()
     }
 
     // Function to update the adapter with images List
     fun setMultipleImages(images: List<Uri>) {
-        imageList = images
+        imageList = images.toMutableList()
         notifyDataSetChanged()
     }
 }
