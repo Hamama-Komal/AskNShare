@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -29,7 +30,7 @@ class PostQuestionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPostQuestionBinding
     private lateinit var galleryAdapter: GallaryImageAdapter
     private var imageList = mutableListOf<Uri>()
-    private val tagsViewModel : TagsViewModel by viewModels()
+    private val tagsViewModel: TagsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,7 @@ class PostQuestionActivity : AppCompatActivity() {
             true
         }
         binding.tagsChip.visibility = View.GONE
-       setupRecyclerView()
+        setupRecyclerView()
 
         binding.buttnGallery.setOnClickListener {
             binding.tagsChip.visibility = View.GONE
@@ -63,7 +64,8 @@ class PostQuestionActivity : AppCompatActivity() {
 
 // Tags Button
         binding.buttonTag.setOnClickListener {
-            val tags = listOf("Android Development", "Kotlin", "Java", "Python", "JavaScript",
+            val tags = listOf(
+                "Android Development", "Kotlin", "Java", "Python", "JavaScript",
                 "TypeScript", "Swift", "Flutter", "React Native", "Node.js",
                 "HTML", "CSS", "Tailwind CSS", "Bootstrap", "React.js",
                 "Next.js", "Angular", "Vue.js", "Svelte", "WebAssembly",
@@ -73,19 +75,20 @@ class PostQuestionActivity : AppCompatActivity() {
                 "Jenkins", "Microservices", "Serverless", "Agile", "Cloud Computing",
                 "Artificial Intelligence", "Machine Learning", "Deep Learning", "NLP",
                 "OpenAI", "Cybersecurity", "Ethical Hacking", "Blockchain", "IoT",
-                "Quantum Computing")
+                "Quantum Computing"
+            )
             addTagsToChipGroup(tags)
             binding.tagsChip.visibility = View.VISIBLE
         }
         observeSelectedTags()
     }
 
-//Handle the Chip Functionallity
+    //Handle the Chip Functionallity
     fun addTagsToChipGroup(tags: List<String>) {
         val chipGroup: ChipGroup = binding.tagsChip
         chipGroup.removeAllViews()
 
-        for (tag in tags){
+        for (tag in tags) {
             val chip = layoutInflater.inflate(R.layout.item_chip, chipGroup, false) as Chip
             chip.text = tag
             chip.isCheckable = true
@@ -93,7 +96,7 @@ class PostQuestionActivity : AppCompatActivity() {
             chip.setTextColor(Color.BLACK)
 
             chip.isChecked = tagsViewModel.isTagSelected(tag)
-            updateChipStyle(chip,chip.isChecked)
+            updateChipStyle(chip, chip.isChecked)
 
             chip.setOnCheckedChangeListener { _, isChecked ->
                 tagsViewModel.toggleTag(tag) // Update ViewModel
@@ -125,8 +128,7 @@ class PostQuestionActivity : AppCompatActivity() {
     }
 
 
-
-// Image Capture by the Camera
+    // Image Capture by the Camera
     private fun captureImageFromCamera() {
         val intent = ImagePicker.with(this)
             .cameraOnly()  // Open only the camera
@@ -141,7 +143,7 @@ class PostQuestionActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri: Uri? = result.data?.data
                 if (uri != null) {
-                   imageList.add(uri) // Set the selected image
+                    imageList.add(uri) // Set the selected image
                     galleryAdapter.setSingleImage(uri) // Update RecyclerView with the selected image
                     // Show RecyclerView if images are selected
                     if (imageList.isNotEmpty()) {
@@ -155,7 +157,7 @@ class PostQuestionActivity : AppCompatActivity() {
             }
         }
 
- // Images Selections from the gallery
+    // Images Selections from the gallery
     private fun pickMultipleImages() {
         pickImagesLauncher.launch("image/*")
     }
@@ -170,6 +172,7 @@ class PostQuestionActivity : AppCompatActivity() {
 
             // Show RecyclerView if images are selected
             if (imageList.isNotEmpty()) {
+                Log.d("GalleryImages", "Images selected: $imageList")
                 binding.recylerGalleryImg.visibility = View.VISIBLE
             }
         }
