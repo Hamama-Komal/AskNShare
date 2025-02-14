@@ -161,7 +161,7 @@ class SetUpProfileActivity : AppCompatActivity() {
     }
 
     private fun saveUserDataToDatabase(userId: String, username: String, fullName: String, email: String, dob: String, profession: String, expertise: List<String>, skills: List<String>, location: String, gender: String, organization: String, bio: String, imageUrl: String?) {
-        val databaseRef = FirebaseDatabase.getInstance().reference.child("Users").child(userId)
+        val databaseRef = FirebaseDatabase.getInstance().reference.child(Constants.USER_NODE).child(userId)
         val userData = mapOf(
             Constants.FULL_NAME to fullName,
             Constants.USER_NAME to username,
@@ -270,14 +270,22 @@ class SetUpProfileActivity : AppCompatActivity() {
     private fun updatePageNumber(position: Int) {
         binding.textViewPageNumber.text = "${position + 1}/3"
     }
-
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.spinKit.visibility = View.VISIBLE
             binding.buttonDone.isActivated = false
+
+            // Disable user interaction
+            window.setFlags(
+                android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
         } else {
             binding.spinKit.visibility = View.GONE
             binding.buttonDone.isActivated = true
+
+            // Enable user interaction
+            window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
     }
 

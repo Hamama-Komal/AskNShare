@@ -158,18 +158,15 @@ class RegisterActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.spinKit.visibility = View.VISIBLE
-            binding.buttonRegister.isEnabled = false
-            binding.textfieldEmail.isEnabled = false
-            binding.textfieldUsername.isEnabled = false
-            binding.textfieldPassword.isEnabled = false
-            binding.checkboxTerms.isEnabled = false
+            // Disable user interaction
+            window.setFlags(
+                android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
         } else {
             binding.spinKit.visibility = View.GONE
-            binding.buttonRegister.isEnabled = true
-            binding.textfieldEmail.isEnabled = true
-            binding.textfieldUsername.isEnabled = true
-            binding.textfieldPassword.isEnabled = true
-            binding.checkboxTerms.isEnabled = true
+            // Enable user interaction
+            window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
     }
 }

@@ -1,22 +1,27 @@
 package com.example.asknshare.ui.fragments
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.datastore.preferences.core.edit
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.asknshare.R
 import com.example.asknshare.data.local.DataStoreHelper
 import com.example.asknshare.ui.activities.EditProfileActivity
 import com.example.asknshare.databinding.FragmentProfileBinding
+import com.example.asknshare.repo.UserProfileRepo
 import com.example.asknshare.ui.activities.WelcomeActivity
 import com.example.asknshare.ui.custom.CustomDialog
+import com.example.asknshare.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.launch
 
 
@@ -35,6 +40,8 @@ class ProfileFragment : Fragment() {
         // Initialize DataStoreHelper
         dataStoreHelper = DataStoreHelper(requireContext())
 
+        fetchAndDisplayUserData()
+
         binding.buttonEditProfile.setOnClickListener {
             startActivity(Intent(context, EditProfileActivity::class.java))
         }
@@ -46,6 +53,27 @@ class ProfileFragment : Fragment() {
 
         return binding.root
     }
+
+    private fun fetchAndDisplayUserData() {
+        UserProfileRepo.fetchUserProfile { userData ->
+
+            binding.textViewUserName.text = userData[Constants.USER_NAME] as? String ?: "Unknown User"
+
+            val profilePicUrl = userData[Constants.PROFILE_PIC] as? String
+            if (!profilePicUrl.isNullOrEmpty()) {
+                Glide.with(requireContext())
+                    .load(profilePicUrl)
+                    .placeholder(R.drawable.user)
+                    .into(binding.profilePicHolder)
+            } else {
+                binding.profilePicHolder.setImageResource(R.drawable.user)
+            }
+        }
+    }
+
+
+
+
 
     private fun logoutUser() {
         lifecycleScope.launch {

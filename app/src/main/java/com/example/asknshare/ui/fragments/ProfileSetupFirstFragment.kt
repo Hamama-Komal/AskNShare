@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.asknshare.data.local.DataStoreHelper
@@ -21,7 +22,6 @@ class ProfileSetupFirstFragment : Fragment() {
     private var _binding: FragmentProfileSetupFirstBinding? = null
     private val binding get() = _binding!!
     private lateinit var dataStoreHelper: DataStoreHelper
-    // Use the shared ViewModel
     private val profileSetupViewModel: ProfileSetUpViewModel by activityViewModels()
 
 
@@ -39,32 +39,35 @@ class ProfileSetupFirstFragment : Fragment() {
         // Initialize DataStoreHelper
         dataStoreHelper = DataStoreHelper(requireContext())
 
-        // Load user data from DataStore
+        // Fetch and set email from DataStore
         lifecycleScope.launch {
-
-            val email = dataStoreHelper.userEmail.first().toString()
-            val datastore_username = dataStoreHelper.username.first() ?: ""
-
-            // Set the username in the UI
-            binding.textfieldUsername.setText(datastore_username)
-
-            val username = binding.textfieldUsername.text.toString()
-            val fullName = binding.textfieldFullname.text.toString()
-
-            if(fullName.isEmpty()){
-                binding.textfieldFullname.error = "Full name should not be empty"
+            dataStoreHelper.userEmail.collect { email ->
+                if (!email.isNullOrEmpty()) {
+                    profileSetupViewModel.setEmail(email)
+                }
             }
-            else if(username.isEmpty()){
-                binding.textfieldUsername.error = "Username should not be empty"
+
+            dataStoreHelper.username.collect { username ->
+                if (!username.isNullOrEmpty()) {
+                    binding.textfieldUsername.setText(username)
+                }
             }
-            else{
-                // Update ViewModel with email and username
-                profileSetupViewModel.setEmail(email)
-                profileSetupViewModel.setUsername(username)
-                profileSetupViewModel.setFullName(fullName)
-            }
+
 
         }
+
+        // Text Change Listener for Username
+        binding.textfieldUsername.addTextChangedListener { editable ->
+            profileSetupViewModel.setUsername(editable.toString())
+        }
+
+        // Text Change Listener for Fullname
+        binding.textfieldFullname.addTextChangedListener { editable ->
+            profileSetupViewModel.setFullName(editable.toString())
+        }
+
+
+
         // Set up autocomplete for profession/role
         setupRoleAutocomplete()
     }
@@ -94,12 +97,14 @@ class ProfileSetupFirstFragment : Fragment() {
         // Set the adapter to the AutoCompleteTextView
         binding.textfieldRole.setAdapter(adapter)
 
-        // Handle item selection and update ViewModel
-        binding.textfieldRole.setOnItemClickListener { _, _, position, _ ->
-            val selectedRole = roles[position]
-            // println("Selected Role: $selectedRole")
-            // Update ViewModel with the selected role
+        binding.textfieldRole.setOnItemClickListener { parent, _, position, _ ->
+            val selectedRole = parent.getItemAtPosition(position).toString()
             profileSetupViewModel.setProfession(selectedRole)
+        }
+
+        // Also listen for manual role entry
+        binding.textfieldRole.addTextChangedListener { editable ->
+            profileSetupViewModel.setProfession(editable.toString())
         }
 
     }

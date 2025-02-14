@@ -122,14 +122,15 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.spinKit.visibility = View.VISIBLE
-            binding.buttonLogin.isEnabled = false
-            binding.textfieldEmail.isEnabled = false
-            binding.textfieldPassword.isEnabled = false
+            // Disable user interaction
+            window.setFlags(
+                android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
         } else {
             binding.spinKit.visibility = View.GONE
-            binding.buttonLogin.isEnabled = true
-            binding.textfieldEmail.isEnabled = true
-            binding.textfieldPassword.isEnabled = true
+            // Enable user interaction
+            window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
     }
 }

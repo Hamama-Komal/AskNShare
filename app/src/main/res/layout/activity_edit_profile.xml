@@ -245,6 +245,7 @@
                     android:fontFamily="@font/montserrat" />
             </com.google.android.material.textfield.TextInputLayout>
 
+<!--
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
@@ -295,6 +296,7 @@
                     android:textSize="@dimen/_14ssp"
                     android:fontFamily="@font/montserrat" />
             </com.google.android.material.textfield.TextInputLayout>
+-->
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
