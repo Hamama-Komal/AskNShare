@@ -8,6 +8,7 @@ object Constants {
     const val DATASTORE_NAME = "USER_PREFS"
 
     // Storing Keys
+    const val USER_NODE = "Users"
     const val FULL_NAME = "full_name"
     const val USER_NAME = "user_name"
     const val EMAIL = "email"

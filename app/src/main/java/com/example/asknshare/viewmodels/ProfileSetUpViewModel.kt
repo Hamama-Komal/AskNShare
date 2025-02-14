@@ -24,8 +24,6 @@ class ProfileSetUpViewModel : ViewModel() {
     val email: LiveData<String> get() = _email
     val dob: LiveData<String> get() = _dob
     val profession: LiveData<String> get() = _profession
-    val expertise: LiveData<List<String>> get() = _expertise
-    val skills: LiveData<List<String>> get() = _skills
     val location: LiveData<String> get() = _location
     val gender: LiveData<String> get() = _gender
     val organization: LiveData<String> get() = _organization

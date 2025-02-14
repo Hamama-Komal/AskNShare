@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.asknshare.R
 import com.example.asknshare.ui.adapters.LeaderboardAdapter
 import com.example.asknshare.ui.adapters.PostAdapter
@@ -14,6 +15,8 @@ import com.example.asknshare.databinding.FragmentHomeBinding
 import com.example.asknshare.models.LeaderboardItem
 import com.example.asknshare.models.Post
 import com.example.asknshare.models.PostModel
+import com.example.asknshare.repo.UserProfileRepo
+import com.example.asknshare.utils.Constants
 
 class HomeFragment : Fragment() {
 
@@ -31,6 +34,7 @@ class HomeFragment : Fragment() {
     ): View{
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        fetchAndDisplayUserData()
         setupTrendingQuestionPager()
         setupLeaderboardRecyclerView()
         loadLeaderboardData()
@@ -39,6 +43,24 @@ class HomeFragment : Fragment() {
 
         return binding.root
     }
+
+    private fun fetchAndDisplayUserData() {
+        UserProfileRepo.fetchUserProfile { userData ->
+            binding.textViewUserName.text = userData[Constants.USER_NAME] as? String ?: "Unknown User"
+            binding.textViewUserFullName.text = userData[Constants.FULL_NAME] as? String ?: "Unknown Full Name"
+
+            val profilePicUrl = userData[Constants.PROFILE_PIC] as? String
+            if (!profilePicUrl.isNullOrEmpty()) {
+                Glide.with(requireContext())
+                    .load(profilePicUrl)
+                    .placeholder(R.drawable.user)
+                    .into(binding.profilePicHolder)
+            } else {
+                binding.profilePicHolder.setImageResource(R.drawable.user)
+            }
+        }
+    }
+
 
     private fun setupTrendingQuestionPager() {
 
