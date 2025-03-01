@@ -11,4 +11,20 @@
         <item name="android:textColor">@color/light_grey</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="CustomDatePickerDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/app_blue</item>
+        <item name="colorSecondary">@color/app_blue</item>
+        <item name="colorAccent">@color/app_blue</item>
+        <item name="buttonBarPositiveButtonStyle">@style/CustomPositiveButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/CustomNegativeButton</item>
+    </style>
+
+    <style name="CustomPositiveButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/app_medium_blue</item>
+    </style>
+
+    <style name="CustomNegativeButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

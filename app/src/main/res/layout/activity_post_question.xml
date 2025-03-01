@@ -49,161 +49,195 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/light_blue_stroke_shape"
-        android:elevation="5dp"
-        android:orientation="vertical"
-        android:padding="8dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_discard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view">
 
-        <EditText
-            android:id="@+id/questionTitle"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:fontFamily="@font/montserrat_semibold"
-            android:hint="@string/title_here"
-            android:padding="12dp"
-            android:maxLines="2"
-            android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/questionDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="start"
-            android:background="@color/white"
-            android:fontFamily="@font/montserrat"
-            android:hint="@string/ask_anything"
-            android:minHeight="120dp"
-            android:maxLines="7"
-            android:padding="12dp"
-            android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_14ssp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyler_gallery_img"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:spanCount="3"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-        <LinearLayout
-            android:id="@+id/buttn_gallery"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:background="@drawable/light_blue_stroke_shape"
-            android:elevation="2dp"
-            android:padding="12dp">
-
-            <ImageView
+            <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ic_gallery" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/light_blue_stroke_shape"
+                android:elevation="5dp"
+                android:orientation="vertical"
+                android:padding="8dp"
+                app:layout_constraintBottom_toTopOf="@id/linearLayout4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/button_camera"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:background="@drawable/light_blue_stroke_shape"
-            android:elevation="2dp"
-            android:padding="12dp">
+                <EditText
+                    android:id="@+id/questionTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:hint="@string/title_here"
+                    android:maxLines="2"
+                    android:padding="12dp"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-            <ImageView
+                <EditText
+                    android:id="@+id/questionDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="start"
+                    android:hint="@string/ask_anything"
+                    android:minHeight="@dimen/_200sdp"
+                    android:padding="12dp"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyler_gallery_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3" />
+
+            </LinearLayout>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/tags_chip"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ic_capture" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:isScrollContainer="true"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:scrollbars="horizontal"
+                android:visibility="visible"
+                app:chipSpacingHorizontal="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                app:layout_constraintVertical_bias="0.0"
+                app:singleSelection="false" />
 
-        <LinearLayout
-            android:id="@+id/button_tag"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:background="@drawable/light_blue_stroke_shape"
-            android:elevation="2dp"
-            android:padding="12dp">
-
-            <ImageView
+            <LinearLayout
+                android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ic_tag" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tags_chip"
+                app:layout_constraintVertical_bias="0.01999998">
 
-        <LinearLayout
-            android:id="@+id/button_attachment"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:background="@drawable/light_blue_stroke_shape"
-            android:elevation="2dp"
-            android:padding="12dp">
+                <LinearLayout
+                    android:id="@+id/buttn_gallery"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/light_blue_stroke_shape"
+                    android:elevation="2dp"
+                    android:padding="12dp">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ic_attachment" />
-        </LinearLayout>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ic_gallery" />
+                </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/button_settings"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:background="@drawable/light_blue_stroke_shape"
-            android:elevation="2dp"
-            android:padding="12dp">
+                <LinearLayout
+                    android:id="@+id/button_camera"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/light_blue_stroke_shape"
+                    android:elevation="2dp"
+                    android:padding="12dp">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ic_settings" />
-        </LinearLayout>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ic_capture" />
+                </LinearLayout>
 
-    </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/button_tag"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/light_blue_stroke_shape"
+                    android:elevation="2dp"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ic_tag" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/button_attachment"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/light_blue_stroke_shape"
+                    android:elevation="2dp"
+                    android:padding="12dp"
+                    android:visibility="invisible">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ic_attachment" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/button_settings"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/light_blue_stroke_shape"
+                    android:elevation="2dp"
+                    android:padding="12dp"
+                    android:visibility="invisible">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ic_settings" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_publish_post"
-        android:layout_width="@dimen/_170sdp"
+        android:layout_width="@dimen/_140sdp"
         android:layout_height="@dimen/_38sdp"
         android:layout_gravity="center"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/blue_button"
         android:elevation="5dp"
         android:fontFamily="@font/montserrat"
@@ -211,47 +245,16 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/_16ssp"
-        app:layout_constraintBottom_toTopOf="@+id/button_discard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_publish_post"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:orientation="vertical" >
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/tags_chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                app:singleSelection="false"
-                app:chipSpacingHorizontal="8dp"
-                android:isScrollContainer="true"
-                android:orientation="horizontal"
-                android:scrollbars="horizontal"
-                android:padding="10dp"/>
-
-            
-        </LinearLayout>
-    </ScrollView>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_discard"
-        android:layout_width="@dimen/_170sdp"
+        android:layout_width="@dimen/_140sdp"
         android:layout_height="@dimen/_38sdp"
         android:layout_gravity="center"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/grey_stroke_button"
         android:elevation="5dp"
         android:fontFamily="@font/montserrat"
@@ -261,6 +264,8 @@
         android:textSize="@dimen/_16ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_publish_post"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -111,6 +111,23 @@ class SetUpProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun saveBitmapToTempFile(bitmap: Bitmap): Uri? {
+        return try {
+            // Create a temporary file in the cache directory
+            val file = File.createTempFile("profile_image", ".jpg", cacheDir)
+            val stream = FileOutputStream(file)
+            // Compress the Bitmap and write it to the file
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.close()
+            // Return the URI of the file
+            Uri.fromFile(file)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
     private fun uploadImageToFirebaseStorage(imageUri: Uri, userId: String, username: String, fullName: String, email: String, dob: String, profession: String, expertise: List<String>, skills: List<String>, location: String, gender: String, organization: String, bio: String) {
         val storageRef = FirebaseStorage.getInstance().reference.child("profile_images/${userId}.jpg")
         storageRef.putFile(imageUri)
@@ -144,21 +161,6 @@ class SetUpProfileActivity : AppCompatActivity() {
             }
     }
 
-    private fun saveBitmapToTempFile(bitmap: Bitmap): Uri? {
-        return try {
-            // Create a temporary file in the cache directory
-            val file = File.createTempFile("profile_image", ".jpg", cacheDir)
-            val stream = FileOutputStream(file)
-            // Compress the Bitmap and write it to the file
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            stream.close()
-            // Return the URI of the file
-            Uri.fromFile(file)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
 
     private fun saveUserDataToDatabase(userId: String, username: String, fullName: String, email: String, dob: String, profession: String, expertise: List<String>, skills: List<String>, location: String, gender: String, organization: String, bio: String, imageUrl: String?) {
         val databaseRef = FirebaseDatabase.getInstance().reference.child(Constants.USER_NODE).child(userId)

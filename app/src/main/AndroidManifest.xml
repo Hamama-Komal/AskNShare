@@ -18,6 +18,12 @@
         android:name="android.permission.CAMERA"
         tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+
 
     <application
         android:allowBackup="true"
@@ -37,6 +43,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.activities.EditProfileActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".ui.activities.SetUpProfileActivity"

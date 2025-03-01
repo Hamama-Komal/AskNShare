@@ -64,19 +64,7 @@ class PostQuestionActivity : AppCompatActivity() {
 
 // Tags Button
         binding.buttonTag.setOnClickListener {
-            val tags = listOf(
-                "Android Development", "Kotlin", "Java", "Python", "JavaScript",
-                "TypeScript", "Swift", "Flutter", "React Native", "Node.js",
-                "HTML", "CSS", "Tailwind CSS", "Bootstrap", "React.js",
-                "Next.js", "Angular", "Vue.js", "Svelte", "WebAssembly",
-                "Firebase", "MongoDB", "MySQL", "PostgreSQL", "SQLite",
-                "Redis", "GraphQL", "REST API", "Supabase", "AWS",
-                "Git", "GitHub", "Docker", "Kubernetes", "CI/CD",
-                "Jenkins", "Microservices", "Serverless", "Agile", "Cloud Computing",
-                "Artificial Intelligence", "Machine Learning", "Deep Learning", "NLP",
-                "OpenAI", "Cybersecurity", "Ethical Hacking", "Blockchain", "IoT",
-                "Quantum Computing"
-            )
+            val tags: List<String> = resources.getStringArray(R.array.roles).toList()
             addTagsToChipGroup(tags)
             binding.tagsChip.visibility = View.VISIBLE
         }
@@ -130,8 +118,7 @@ class PostQuestionActivity : AppCompatActivity() {
 
     // Image Capture by the Camera
     private fun captureImageFromCamera() {
-        val intent = ImagePicker.with(this)
-            .cameraOnly()  // Open only the camera
+        val intent = ImagePicker.with(this).cameraOnly()  // Open only the camera
             .crop()  // Enable cropping
             .createIntent()
 

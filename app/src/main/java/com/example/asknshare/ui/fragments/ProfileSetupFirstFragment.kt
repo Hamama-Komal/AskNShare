@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.asknshare.R
+import com.example.asknshare.R.*
 import com.example.asknshare.data.local.DataStoreHelper
 import com.example.asknshare.databinding.FragmentProfileSetupFirstBinding
 import com.example.asknshare.viewmodels.ProfileSetUpViewModel
@@ -61,7 +63,7 @@ class ProfileSetupFirstFragment : Fragment() {
             profileSetupViewModel.setUsername(editable.toString())
         }
 
-        // Text Change Listener for Fullname
+        // Text Change Listener for Full name
         binding.textfieldFullname.addTextChangedListener { editable ->
             profileSetupViewModel.setFullName(editable.toString())
         }
@@ -74,18 +76,7 @@ class ProfileSetupFirstFragment : Fragment() {
 
     private fun setupRoleAutocomplete() {
         // List of roles/professions
-        val roles = listOf(
-            "Software Engineer", "Data Scientist", "Product Manager", "UX/UI Designer", "DevOps Engineer",
-            "Marketing Specialist", "Teacher", "Student", "Doctor", "Lawyer", "Entrepreneur", "Researcher",
-            "Engineer", "Scientist", "Analyst", "Consultant", "Designer", "Developer", "Architect", "Writer",
-            "Artist", "Musician", "Athlete", "Activist", "Volunteer", "Intern", "Lab Technician", "Pharmacist",
-            "Therapist", "Counselor", "Librarian", "Curator", "Animator", "Game Developer", "Social Media Manager",
-            "Financial Analyst", "Policy Advisor", "Environmentalist", "Historian", "Philosopher", "Linguist",
-            "Translator", "Biologist", "Chemist", "Physicist", "Mathematician", "Statistician", "Economist",
-            "Psychologist", "Sociologist", "Anthropologist", "Geographer", "Astronomer", "Neuroscientist",
-            "Robotics Engineer", "AI Specialist", "Blockchain Developer", "Renewable Energy Engineer",
-            "Nanotechnologist", "Aerospace Engineer", "Marine Biologist", "Astrophysicist", "Material Scientist"
-        )
+        val roles: List<String> = resources.getStringArray(array.roles_list).toList()
 
         // Create an adapter for the AutoCompleteTextView
         val adapter = ArrayAdapter(

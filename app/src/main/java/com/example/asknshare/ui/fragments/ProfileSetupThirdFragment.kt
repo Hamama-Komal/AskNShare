@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.asknshare.R
 import com.example.asknshare.databinding.FragmentProfileSetupSecondBinding
@@ -37,12 +38,8 @@ class ProfileSetupThirdFragment : Fragment() {
 
     private fun setupInterestChips() {
 
-        val interestList = listOf(
-            "Reading", "Traveling", "Photography", "Gaming", "Cooking", "Sports", "Music", "Art", "Fitness",
-            "Research", "Writing", "Public Speaking", "Volunteering", "Entrepreneurship", "Programming",
-            "Robotics", "Environmental Activism", "History", "Science Experiments", "Graphic Design",
-            "Dance", "Theater", "Astronomy", "Language Learning"
-        )
+        // Access the string array from resources
+        val interestList: List<String> = resources.getStringArray(R.array.hobbies).toList()
 
         val chipGroup = binding.chipGroupInterest
         interestList.forEach { interest ->
@@ -52,9 +49,9 @@ class ProfileSetupThirdFragment : Fragment() {
             chip.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     profileSetupViewModel.updateSelectedInterests(interest, isChecked)
-                   // println("Selected Interest: $interest")
+                    chip.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.app_dark_blue)
                 } else {
-                  //  println("Deselected Interest: $interest")
+                    chip.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.app_light_blue)
                 }
             }
             chipGroup.addView(chip)
