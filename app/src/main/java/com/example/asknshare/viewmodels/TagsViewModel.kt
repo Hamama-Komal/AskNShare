@@ -3,23 +3,28 @@ package com.example.asknshare.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 
-class TagsViewModel: ViewModel() {
+class TagViewModel : ViewModel() {
+    private val _tags = MutableLiveData<MutableList<String>>(mutableListOf())
+    val tags: LiveData<List<String>> get() = _tags.map { it.toList() }
 
-    private val _selectedTags = MutableLiveData<MutableSet<String>>(mutableSetOf())
-    val selectedTags: LiveData<MutableSet<String>> get() = _selectedTags
-
-    fun toggleTag(tag: String) {
-        val currentTags = _selectedTags.value ?: mutableSetOf()
-        if (currentTags.contains(tag)) {
-            currentTags.remove(tag) // Unselect tag
-        } else {
-            currentTags.add(tag) // Select tag
+    fun addTag(tag: String) {
+        val updatedTags = _tags.value ?: mutableListOf()
+        if (!updatedTags.contains(tag)) {
+            updatedTags.add(tag)
+            _tags.value = updatedTags
         }
-        _selectedTags.value = currentTags
     }
 
-    fun isTagSelected(tag: String): Boolean {
-        return _selectedTags.value?.contains(tag) ?: false
+    fun removeTag(tag: String) {
+        val updatedTags = _tags.value ?: mutableListOf()
+        updatedTags.remove(tag)
+        _tags.value = updatedTags
+    }
+
+
+    fun clearTags() {
+        _tags.value = mutableListOf()
     }
 }

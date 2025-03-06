@@ -91,6 +91,7 @@
     <string name="done">Done</string>
     <string name="warning">Warning</string>
     <string name="slow_or_poor_internet_connection">Slow or Poor Internet Connection</string>
+    <string name="enter_tag">Enter tag</string>
     <string-array name="expertise_list">
         <item>Software Development</item>
         <item>Data Science</item>
@@ -251,23 +252,6 @@
         <item>data analysis</item>
         <item>statistics</item>
         <item>big data</item>
-        <item>data visualization</item>
-        <item>Pandas</item>
-        <item>NumPy</item>
-        <item>TensorFlow</item>
-        <item>Scikit-learn</item>
-        <item>product management</item>
-        <item>roadmap</item>
-        <item>user experience</item>
-        <item>project management</item>
-        <item>agile</item>
-        <item>scrum</item>
-        <item>stakeholder communication</item>
-        <item>market research</item>
-        <item>feature prioritization</item>
-        <item>UX design</item>
-        <item>UI design</item>
-        <item>usability</item>
         <item>wireframes</item>
         <item>prototyping</item>
         <item>user research</item>
@@ -280,15 +264,6 @@
         <item>infrastructure</item>
         <item>deployment</item>
         <item>Docker</item>
-        <item>Kubernetes</item>
-        <item>cloud computing</item>
-        <item>monitoring</item>
-        <item>serverless</item>
-        <item>marketing</item>
-        <item>branding</item>
-        <item>SEO</item>
-        <item>content creation</item>
-        <item>social media</item>
         <item>campaigns</item>
         <item>analytics</item>
         <item>digital marketing</item>
@@ -296,43 +271,9 @@
         <item>education</item>
         <item>teaching</item>
         <item>students</item>
-        <item>curriculum</item>
-        <item>pedagogy</item>
-        <item>e-learning</item>
-        <item>classroom management</item>
-        <item>lesson planning</item>
-        <item>medicine</item>
-        <item>healthcare</item>
-        <item>diagnosis</item>
-        <item>treatment</item>
-        <item>surgery</item>
-        <item>patients</item>
-        <item>medical research</item>
-        <item>clinical practice</item>
-        <item>legal</item>
-        <item>law</item>
-        <item>contracts</item>
-        <item>litigation</item>
-        <item>justice</item>
-        <item>human rights</item>
-        <item>corporate law</item>
-        <item>criminal law</item>
-        <item>business</item>
-        <item>startup</item>
-        <item>innovation</item>
         <item>leadership</item>
         <item>venture capital</item>
         <item>product launch</item>
-        <item>market strategy</item>
-        <item>scaling</item>
-        <item>research</item>
-        <item>science</item>
-        <item>experimentation</item>
-        <item>academic</item>
-        <item>discovery</item>
-        <item>data collection</item>
-        <item>hypothesis testing</item>
-        <item>publication</item>
         <item>engineering</item>
         <item>design</item>
         <item>problem-solving</item>
@@ -340,12 +281,6 @@
         <item>innovation</item>
         <item>mechanics</item>
         <item>electronics</item>
-        <item>systems</item>
-        <item>science</item>
-        <item>research</item>
-        <item>laboratory</item>
-        <item>experiments</item>
-        <item>theory</item>
         <item>data analysis</item>
         <item>scientific method</item>
         <item>data</item>
@@ -353,81 +288,10 @@
         <item>reporting</item>
         <item>forecasting</item>
         <item>decision-making</item>
-        <item>business intelligence</item>
-        <item>data modeling</item>
-        <item>advisory</item>
-        <item>strategy</item>
-        <item>problem-solving</item>
-        <item>client</item>
-        <item>business</item>
-        <item>process improvement</item>
-        <item>change management</item>
-        <item>design</item>
-        <item>creativity</item>
-        <item>aesthetics</item>
-        <item>visuals</item>
+        <item>web development</item>>
         <item>art</item>
-        <item>graphic design</item>
-        <item>industrial design</item>
-        <item>coding</item>
-        <item>programming</item>
-        <item>software</item>
-        <item>debugging</item>
-        <item>applications</item>
-        <item>web development</item>
-        <item>mobile development</item>
-        <item>architecture</item>
-        <item>design</item>
-        <item>construction</item>
-        <item>urban planning</item>
-        <item>structures</item>
-        <item>interior design</item>
-        <item>building codes</item>
-        <item>writing</item>
-        <item>content</item>
-        <item>storytelling</item>
-        <item>editing</item>
-        <item>literature</item>
-        <item>creative writing</item>
-        <item>technical writing</item>
-        <item>art</item>
-        <item>creativity</item>
-        <item>painting</item>
-        <item>sculpture</item>
-        <item>drawing</item>
-        <item>art history</item>
-        <item>expression</item>
-        <item>music</item>
-        <item>composition</item>
-        <item>performance</item>
-        <item>instruments</item>
-        <item>sound</item>
-        <item>recording</item>
-        <item>production</item>
         <item>sports</item>
         <item>fitness</item>
-        <item>training</item>
-        <item>competition</item>
-        <item>physical activity</item>
-        <item>teamwork</item>
-        <item>coaching</item>
-        <item>advocacy</item>
-        <item>social justice</item>
-        <item>environment</item>
-        <item>equality</item>
-        <item>change</item>
-        <item>community organizing</item>
-        <item>policy reform</item>
-        <item>community</item>
-        <item>service</item>
-        <item>charity</item>
-        <item>nonprofit</item>
-        <item>helping</item>
-        <item>outreach</item>
-        <item>volunteering</item>
-        <item>learning</item>
-        <item>experience</item>
-        <item>entry-level</item>
         <item>mentorship</item>
         <item>career</item>
         <item>professional growth</item>
@@ -441,37 +305,6 @@
         <item>quality control</item>
         <item>medicine</item>
         <item>drugs</item>
-        <item>healthcare</item>
-        <item>prescriptions</item>
-        <item>patients</item>
-        <item>pharmacy</item>
-        <item>medication management</item>
-        <item>mental health</item>
-        <item>therapy</item>
-        <item>counseling</item>
-        <item>well-being</item>
-        <item>emotions</item>
-        <item>psychology</item>
-        <item>behavioral therapy</item>
-        <item>counseling</item>
-        <item>mental health</item>
-        <item>support</item>
-        <item>guidance</item>
-        <item>therapy</item>
-        <item>well-being</item>
-        <item>emotional support</item>
-        <item>books</item>
-        <item>library</item>
-        <item>information</item>
-        <item>research</item>
-        <item>literature</item>
-        <item>archives</item>
-        <item>knowledge management</item>
-        <item>museum</item>
-        <item>art</item>
-        <item>exhibitions</item>
-        <item>curation</item>
-        <item>collections</item>
         <item>history</item>
         <item>cultural heritage</item>>
         <item>graphics</item>
@@ -491,104 +324,31 @@
         <item>content</item>
         <item>engagement</item>
         <item>marketing</item>
-        <item>platforms</item>
-        <item>branding</item>
-        <item>analytics</item>
-        <item>finance</item>
-        <item>investments</item>
-        <item>budgeting</item>
         <item>forecasting</item>
         <item>economics</item>
         <item>financial modeling</item>
         <item>risk management</item>
         <item>policy</item>
         <item>government</item>
-        <item>advisory</item>
-        <item>regulations</item>
-        <item>public administration</item>
-        <item>legislation</item>
         <item>advocacy</item>
         <item>environment</item>
-        <item>sustainability</item>
-        <item>climate change</item>
-        <item>ecology</item>
-        <item>conservation</item>
-        <item>green energy</item>
-        <item>pollution control</item>
-        <item>history</item>
-        <item>research</item>
-        <item>archaeology</item>
-        <item>culture</item>
-        <item>civilizations</item>
-        <item>historical analysis</item>
-        <item>chronology</item>
-        <item>philosophy</item>
-        <item>ethics</item>
-        <item>logic</item>
-        <item>thought</item>
-        <item>reasoning</item>
-        <item>metaphysics</item>
-        <item>epistemology</item>
-        <item>language</item>
-        <item>grammar</item>
-        <item>syntax</item>
-        <item>semantics</item>
-        <item>communication</item>
-        <item>phonetics</item>
         <item>translation</item>
         <item>translation</item>
         <item>language</item>
-        <item>interpretation</item>
-        <item>multilingual</item>
         <item>localization</item>
-        <item>linguistics</item>
-        <item>cross-cultural communication</item>
-        <item>biology</item>
-        <item>life sciences</item>
-        <item>genetics</item>
-        <item>ecology</item>
-        <item>organisms</item>
-        <item>evolution</item>
         <item>microbiology</item>
         <item>chemistry</item>
         <item>chemical reactions</item>
         <item>compounds</item>
         <item>elements</item>
         <item>laboratory</item>
-        <item>organic chemistry</item>
-        <item>analytical chemistry</item>
-        <item>physics</item>
-        <item>quantum mechanics</item>
-        <item>astrophysics</item>
-        <item>energy</item>
-        <item>matter</item>
         <item>thermodynamics</item>
         <item>relativity</item>
         <item>mathematics</item>
-        <item>algebra</item>
-        <item>calculus</item>
-        <item>geometry</item>
-        <item>statistics</item>
-        <item>logic</item>
-        <item>number theory</item>
-        <item>statistics</item>
-        <item>data analysis</item>
-        <item>probability</item>
-        <item>modeling</item>
-        <item>forecasting</item>
         <item>surveys</item>
         <item>statistical methods</item>
         <item>economics</item>
         <item>finance</item>
-        <item>trade</item>
-        <item>markets</item>
-        <item>macroeconomics</item>
-        <item>microeconomics</item>
-        <item>economic policy</item>
-        <item>psychology</item>
-        <item>behavior</item>
-        <item>cognition</item>
-        <item>mental health</item>
         <item>therapy</item>
         <item>neuroscience</item>
         <item>developmental psychology</item>
@@ -596,16 +356,6 @@
         <item>society</item>
         <item>social behavior</item>
         <item>culture</item>
-        <item>social structures</item>
-        <item>inequality</item>
-        <item>social change</item>
-        <item>anthropology</item>
-        <item>culture</item>
-        <item>human behavior</item>
-        <item>archaeology</item>
-        <item>ethnography</item>
-        <item>linguistic anthropology</item>
-        <item>biological anthropology</item>
         <item>geography</item>
         <item>maps</item>
         <item>spatial analysis</item>
@@ -635,57 +385,6 @@
         <item>control systems</item>
         <item>machine design</item>
         <item>artificial intelligence</item>
-        <item>machine learning</item>
-        <item>neural networks</item>
-        <item>data</item>
-        <item>algorithms</item>
-        <item>deep learning</item>
-        <item>NLP</item>
-        <item>blockchain</item>
-        <item>crypto</item>
-        <item>smart contracts</item>
-        <item>decentralization</item>
-        <item>ethereum</item>
-        <item>bitcoin</item>
-        <item>Web3</item>
-        <item>solar</item>
-        <item>wind</item>
-        <item>hydro</item>
-        <item>sustainability</item>
-        <item>green energy</item>
-        <item>energy efficiency</item>
-        <item>carbon neutrality</item>
-        <item>nanotechnology</item>
-        <item>materials</item>
-        <item>nanoparticles</item>
-        <item>atomic scale</item>
-        <item>biomedical applications</item>
-        <item>quantum dots</item>
-        <item>surface engineering</item>
-        <item>aerospace</item>
-        <item>aircraft</item>
-        <item>spacecraft</item>
-        <item>aerodynamics</item>
-        <item>propulsion</item>
-        <item>satellites</item>
-        <item>flight mechanics</item>
-        <item>marine biology</item>
-        <item>oceanography</item>
-        <item>marine ecosystems</item>
-        <item>sea life</item>
-        <item>conservation</item>
-        <item>coral reefs</item>
-        <item>fisheries</item>
-        <item>astrophysics</item>
-        <item>cosmology</item>
-        <item>black holes</item>
-        <item>galaxies</item>
-        <item>dark matter</item>
-        <item>stellar evolution</item>
-        <item>gravitational waves</item>
-        <item>material science</item>
-        <item>materials</item>
-        <item>nanomaterials</item>
-        <item>surface engineering</item>
+
     </string-array>
 </resources>

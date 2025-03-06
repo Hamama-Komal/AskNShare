@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.asknshare.R
 import com.example.asknshare.models.TagModel
 
+
 class TagsAdapter(private val tagList: List<TagModel>) :
     RecyclerView.Adapter<TagsAdapter.TagViewHolder>() {
 
@@ -41,3 +42,5 @@ class TagsAdapter(private val tagList: List<TagModel>) :
         }
     }
 }
+
+
