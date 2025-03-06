@@ -75,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
+            android:paddingVertical="12dp"
             android:hint="@string/profession_role"
             android:inputType="text"
             android:textColor="@color/black"

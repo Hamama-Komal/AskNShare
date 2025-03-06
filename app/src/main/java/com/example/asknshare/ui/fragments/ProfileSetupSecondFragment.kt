@@ -1,11 +1,13 @@
 package com.example.asknshare.ui.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.asknshare.R
 import com.example.asknshare.databinding.FragmentProfileSetupFirstBinding
@@ -40,18 +42,8 @@ class ProfileSetupSecondFragment : Fragment() {
 
     private fun setupExpertiseChips() {
 
-        val expertiseList = listOf(
-            "Software Development", "Data Science", "Artificial Intelligence", "Machine Learning",
-            "Cybersecurity", "Cloud Computing", "Web Development", "Mobile App Development",
-            "Electrical Engineering", "Mechanical Engineering", "Civil Engineering", "Chemical Engineering",
-            "Biotechnology", "Pharmaceutical Sciences", "Environmental Science", "Physics", "Mathematics",
-            "Economics", "Psychology", "Political Science", "Sociology", "Linguistics", "Architecture",
-            "Business Administration", "Marketing", "Finance", "Law", "Medicine", "Education", "Journalism",
-            "Fine Arts", "Performing Arts", "Game Design", "Animation", "Digital Marketing", "Renewable Energy",
-            "Nanotechnology", "Aerospace Engineering", "Marine Biology", "Astrophysics", "Neuroscience",
-            "Anthropology", "Philosophy", "History", "Literature", "Geography", "Statistics", "Robotics",
-            "Material Science", "Quantum Computing", "Blockchain Technology"
-        )
+        // Access the string array from resources
+        val expertiseList: List<String> = resources.getStringArray(R.array.expertise_list).toList()
 
         val chipGroup = binding.chipGroupExpertise
         expertiseList.forEach { expertise ->
@@ -61,9 +53,9 @@ class ProfileSetupSecondFragment : Fragment() {
             chip.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     profileSetupViewModel.updateSelectedExpertise(expertise, isChecked)
-                   // println("Selected Expertise: $expertise")
+                    chip.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.app_dark_blue)
                 } else {
-                    //println("Deselected Expertise: $expertise")
+                    chip.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.app_light_blue)
                 }
             }
             chipGroup.addView(chip)

@@ -74,7 +74,7 @@
     <string name="title_here">Title Here</string>
     <string name="ask_anything">Ask anything</string>
     <string name="discard">Discard</string>
-    <string name="publish_post">Publish Post</string>
+    <string name="publish_post">Publish</string>
     <string name="save_changes">Save Changes</string>
     <string name="reply_to_post">Reply to Post</string>
     <string name="publish_reply">Publish Reply</string>
@@ -89,4 +89,302 @@
     <string name="select_your_interests">Select Your Interests</string>
     <string name="select_your_expertise">Select Your  Expertise</string>
     <string name="done">Done</string>
+    <string name="warning">Warning</string>
+    <string name="slow_or_poor_internet_connection">Slow or Poor Internet Connection</string>
+    <string name="enter_tag">Enter tag</string>
+    <string-array name="expertise_list">
+        <item>Software Development</item>
+        <item>Data Science</item>
+        <item>Artificial Intelligence</item>
+        <item>Machine Learning</item>
+        <item>Cybersecurity</item>
+        <item>Cloud Computing</item>
+        <item>Web Development</item>
+        <item>Mobile App Development</item>
+        <item>Electrical Engineering</item>
+        <item>Mechanical Engineering</item>
+        <item>Civil Engineering</item>
+        <item>Chemical Engineering</item>
+        <item>Biotechnology</item>
+        <item>Pharmaceutical Sciences</item>
+        <item>Environmental Science</item>
+        <item>Physics</item>
+        <item>Mathematics</item>
+        <item>Economics</item>
+        <item>Psychology</item>
+        <item>Political Science</item>
+        <item>Sociology</item>
+        <item>Linguistics</item>
+        <item>Architecture</item>
+        <item>Business Administration</item>
+        <item>Marketing</item>
+        <item>Finance</item>
+        <item>Law</item>
+        <item>Medicine</item>
+        <item>Education</item>
+        <item>Journalism</item>
+        <item>Fine Arts</item>
+        <item>Performing Arts</item>
+        <item>Game Design</item>
+        <item>Animation</item>
+        <item>Digital Marketing</item>
+        <item>Renewable Energy</item>
+        <item>Nanotechnology</item>
+        <item>Aerospace Engineering</item>
+        <item>Marine Biology</item>
+        <item>Astrophysics</item>
+        <item>Neuroscience</item>
+        <item>Anthropology</item>
+        <item>Philosophy</item>
+        <item>History</item>
+        <item>Literature</item>
+        <item>Geography</item>
+        <item>Statistics</item>
+        <item>Robotics</item>
+        <item>Material Science</item>
+        <item>Quantum Computing</item>
+        <item>Blockchain Technology</item>
+    </string-array>
+    <string-array name="hobbies">
+        <item>Reading</item>
+        <item>Traveling</item>
+        <item>Photography</item>
+        <item>Gaming</item>
+        <item>Cooking</item>
+        <item>Sports</item>
+        <item>Music</item>
+        <item>Art</item>
+        <item>Fitness</item>
+        <item>Research</item>
+        <item>Writing</item>
+        <item>Public Speaking</item>
+        <item>Volunteering</item>
+        <item>Entrepreneurship</item>
+        <item>Programming</item>
+        <item>Robotics</item>
+        <item>Environmental Activism</item>
+        <item>History</item>
+        <item>Science Experiments</item>
+        <item>Graphic Design</item>
+        <item>Dance</item>
+        <item>Theater</item>
+        <item>Astronomy</item>
+        <item>Language Learning</item>
+    </string-array>
+    <string-array name="roles_list">
+        <item>Software Engineer</item>
+        <item>Data Scientist</item>
+        <item>Product Manager</item>
+        <item>UX/UI Designer</item>
+        <item>DevOps Engineer</item>
+        <item>Marketing Specialist</item>
+        <item>Teacher</item>
+        <item>Student</item>
+        <item>Doctor</item>
+        <item>Lawyer</item>
+        <item>Entrepreneur</item>
+        <item>Researcher</item>
+        <item>Engineer</item>
+        <item>Scientist</item>
+        <item>Analyst</item>
+        <item>Consultant</item>
+        <item>Designer</item>
+        <item>Developer</item>
+        <item>Architect</item>
+        <item>Writer</item>
+        <item>Artist</item>
+        <item>Musician</item>
+        <item>Athlete</item>
+        <item>Activist</item>
+        <item>Volunteer</item>
+        <item>Intern</item>
+        <item>Lab Technician</item>
+        <item>Pharmacist</item>
+        <item>Therapist</item>
+        <item>Counselor</item>
+        <item>Librarian</item>
+        <item>Curator</item>
+        <item>Animator</item>
+        <item>Game Developer</item>
+        <item>Social Media Manager</item>
+        <item>Financial Analyst</item>
+        <item>Policy Advisor</item>
+        <item>Environmentalist</item>
+        <item>Historian</item>
+        <item>Philosopher</item>
+        <item>Linguist</item>
+        <item>Translator</item>
+        <item>Biologist</item>
+        <item>Chemist</item>
+        <item>Physicist</item>
+        <item>Mathematician</item>
+        <item>Statistician</item>
+        <item>Economist</item>
+        <item>Psychologist</item>
+        <item>Sociologist</item>
+        <item>Anthropologist</item>
+        <item>Geographer</item>
+        <item>Astronomer</item>
+        <item>Neuroscientist</item>
+        <item>Robotics Engineer</item>
+        <item>AI Specialist</item>
+        <item>Blockchain Developer</item>
+        <item>Renewable Energy Engineer</item>
+        <item>Nanotechnologist</item>
+        <item>Aerospace Engineer</item>
+        <item>Marine Biologist</item>
+        <item>Astrophysicist</item>
+        <item>Material Scientist</item>
+    </string-array>
+    <string-array name="roles">
+        <item>coding</item>
+        <item>programming</item>
+        <item>software development</item>
+        <item>debugging</item>
+        <item>algorithms</item>
+        <item>data structures</item>
+        <item>backend</item>
+        <item>frontend</item>
+        <item>full stack</item>
+        <item>API design</item>
+        <item>data science</item>
+        <item>machine learning</item>
+        <item>data analysis</item>
+        <item>statistics</item>
+        <item>big data</item>
+        <item>wireframes</item>
+        <item>prototyping</item>
+        <item>user research</item>
+        <item>interaction design</item>
+        <item>visual design</item>
+        <item>responsive design</item>
+        <item>DevOps</item>
+        <item>CI/CD</item>
+        <item>automation</item>
+        <item>infrastructure</item>
+        <item>deployment</item>
+        <item>Docker</item>
+        <item>campaigns</item>
+        <item>analytics</item>
+        <item>digital marketing</item>
+        <item>advertising</item>
+        <item>education</item>
+        <item>teaching</item>
+        <item>students</item>
+        <item>leadership</item>
+        <item>venture capital</item>
+        <item>product launch</item>
+        <item>engineering</item>
+        <item>design</item>
+        <item>problem-solving</item>
+        <item>technology</item>
+        <item>innovation</item>
+        <item>mechanics</item>
+        <item>electronics</item>
+        <item>data analysis</item>
+        <item>scientific method</item>
+        <item>data</item>
+        <item>insights</item>
+        <item>reporting</item>
+        <item>forecasting</item>
+        <item>decision-making</item>
+        <item>web development</item>>
+        <item>art</item>
+        <item>sports</item>
+        <item>fitness</item>
+        <item>mentorship</item>
+        <item>career</item>
+        <item>professional growth</item>
+        <item>skills development</item>
+        <item>laboratory</item>
+        <item>experiments</item>
+        <item>equipment</item>
+        <item>testing</item>
+        <item>science</item>
+        <item>data collection</item>
+        <item>quality control</item>
+        <item>medicine</item>
+        <item>drugs</item>
+        <item>history</item>
+        <item>cultural heritage</item>>
+        <item>graphics</item>
+        <item>storyboarding</item>
+        <item>motion</item>
+        <item>creativity</item>
+        <item>3D modeling</item>
+        <item>character design</item>
+        <item>gaming</item>
+        <item>game design</item>
+        <item>coding</item>
+        <item>VR</item>
+        <item>AR</item>
+        <item>game mechanics</item>
+        <item>level design</item>
+        <item>social media</item>
+        <item>content</item>
+        <item>engagement</item>
+        <item>marketing</item>
+        <item>forecasting</item>
+        <item>economics</item>
+        <item>financial modeling</item>
+        <item>risk management</item>
+        <item>policy</item>
+        <item>government</item>
+        <item>advocacy</item>
+        <item>environment</item>
+        <item>translation</item>
+        <item>translation</item>
+        <item>language</item>
+        <item>localization</item>
+        <item>microbiology</item>
+        <item>chemistry</item>
+        <item>chemical reactions</item>
+        <item>compounds</item>
+        <item>elements</item>
+        <item>laboratory</item>
+        <item>thermodynamics</item>
+        <item>relativity</item>
+        <item>mathematics</item>
+        <item>surveys</item>
+        <item>statistical methods</item>
+        <item>economics</item>
+        <item>finance</item>
+        <item>therapy</item>
+        <item>neuroscience</item>
+        <item>developmental psychology</item>
+        <item>sociology</item>
+        <item>society</item>
+        <item>social behavior</item>
+        <item>culture</item>
+        <item>geography</item>
+        <item>maps</item>
+        <item>spatial analysis</item>
+        <item>environment</item>
+        <item>GIS</item>
+        <item>cartography</item>
+        <item>urban planning</item>
+        <item>astronomy</item>
+        <item>space</item>
+        <item>stars</item>
+        <item>planets</item>
+        <item>cosmology</item>
+        <item>observatories</item>
+        <item>celestial bodies</item>
+        <item>neuroscience</item>
+        <item>brain</item>
+        <item>neurons</item>
+        <item>cognition</item>
+        <item>behavior</item>
+        <item>neurobiology</item>
+        <item>brain imaging</item>
+        <item>robotics</item>
+        <item>automation</item>
+        <item>AI</item>
+        <item>mechanics</item>
+        <item>electronics</item>
+        <item>control systems</item>
+        <item>machine design</item>
+        <item>artificial intelligence</item>
+
+    </string-array>
 </resources>

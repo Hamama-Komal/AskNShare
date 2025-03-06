@@ -116,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
         binding.textfieldPassword.setSelection(binding.textfieldPassword.text?.length ?: 0)
 
         // Log the current state for debugging
-        println("Password visibility toggled. isPasswordVisible: $isPasswordVisible")
+       // println("Password visibility toggled. isPasswordVisible: $isPasswordVisible")
     }
 
     private fun showLoading(isLoading: Boolean) {

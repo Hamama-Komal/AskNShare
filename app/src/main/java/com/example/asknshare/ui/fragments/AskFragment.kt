@@ -34,7 +34,6 @@ class AskFragment : Fragment() {
         }
 
          binding.buttonAi.setOnClickListener {
-            startActivity(Intent(context, SetUpProfileActivity::class.java))
         }
 
 
