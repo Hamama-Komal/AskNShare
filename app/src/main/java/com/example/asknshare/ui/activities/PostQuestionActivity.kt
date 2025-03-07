@@ -22,6 +22,7 @@ import com.example.asknshare.databinding.ActivityPostQuestionBinding
 import com.example.asknshare.ui.adapters.GallaryImageAdapter
 import com.example.asknshare.ui.adapters.TagAdapter
 import com.example.asknshare.ui.custom.CustomDialog
+import com.example.asknshare.utils.Constants
 import com.example.asknshare.viewmodels.TagViewModel
 import com.github.drjacky.imagepicker.ImagePicker
 import com.google.firebase.auth.FirebaseAuth
@@ -237,7 +238,7 @@ class PostQuestionActivity : AppCompatActivity() {
             return
         }
 
-        val storageRef = FirebaseStorage.getInstance().reference.child("post_images")
+        val storageRef = FirebaseStorage.getInstance().reference.child(Constants.POSTS_IMAGES_NODE)
         val imageUrls = mutableMapOf<String, String>()
         var uploadCount = 0
 
@@ -261,20 +262,20 @@ class PostQuestionActivity : AppCompatActivity() {
     // 🔹 Save Post to Firebase Realtime Database
     private fun savePostToDatabase(imageUrls: Map<String, String>) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
-        val postId = FirebaseDatabase.getInstance().reference.child("Posts").push().key ?: return
+        val postId = FirebaseDatabase.getInstance().reference.child(Constants.POSTS_NODE).push().key ?: return
 
         val post = mapOf(
-            "postedBy" to userId,
-            "heading" to binding.questionTitle.text.toString().trim(),
-            "body" to binding.questionDescription.text.toString().trim(),
-            "images" to imageUrls,
-            "timestamp" to System.currentTimeMillis(),
-            "likes" to emptyMap<String, Boolean>(),
-            "dislikes" to emptyMap<String, Boolean>(),
-            "views" to 0,
-            "bookmarks" to emptyMap<String, Boolean>(),
-            "comments" to emptyMap<String, Any>(),
-            "tags" to tagViewModel.tags.value.orEmpty()
+            Constants.POSTED_BY to userId,
+            Constants.POST_HEADING to binding.questionTitle.text.toString().trim(),
+            Constants.POST_BODY to binding.questionDescription.text.toString().trim(),
+            Constants.POST_IMAGES to imageUrls,
+            Constants.POST_TIME to System.currentTimeMillis(),
+            Constants.POST_UP_VOTES to emptyMap<String, Boolean>(),
+            Constants.POST_DOWN_VOTES to emptyMap<String, Boolean>(),
+            Constants.POST_VIEWS to 0,
+            Constants.POST_BOOKMARKS to emptyMap<String, Boolean>(),
+            Constants.POST_REPLIES to emptyMap<String, Any>(),
+            Constants.POST_TAGS to tagViewModel.tags.value.orEmpty()
         )
 
         FirebaseDatabase.getInstance().reference.child("Posts").child(postId).setValue(post)
