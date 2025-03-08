@@ -24,7 +24,7 @@ class ImageAdapter(private val imageList: List<String>) :
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         Glide.with(holder.itemView.context)
             .load(imageList[position])
-            .placeholder(R.drawable.user)
+            .placeholder(R.drawable.placeholder)
             .into(holder.imageView)
     }
 
