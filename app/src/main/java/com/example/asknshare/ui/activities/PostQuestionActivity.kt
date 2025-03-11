@@ -316,6 +316,7 @@ class PostQuestionActivity : AppCompatActivity() {
         val postId = FirebaseDatabase.getInstance().reference.child(Constants.POSTS_NODE).push().key ?: return
 
         val post = mapOf(
+            Constants.POST_ID to postId,
             Constants.POSTED_BY_UID to userId,
             Constants.POSTED_BY_FULL_NAME to fullName,
             Constants.POSTED_BY_PROFILE to profileImage,

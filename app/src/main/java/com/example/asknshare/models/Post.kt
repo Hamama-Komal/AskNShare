@@ -1,6 +1,7 @@
 package com.example.asknshare.models
 
 data class Post(
+    val postId: String = "",
     val postedByUid: String = "",
     val postedByFullName: String = "",
     val postedByUsername: String = "",

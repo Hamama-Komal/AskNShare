@@ -40,6 +40,7 @@ object Constants {
     const val POST_BOOKMARKS = "bookmarks"
     const val POST_REPLIES = "replies"
     const val POST_TAGS = "tags"
+    const val POST_ID = "postId"
 
 
 

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/_80sdp"
-    android:layout_height="@dimen/_80sdp"
-    android:layout_margin="5dp">
+    android:layout_width="@dimen/_77sdp"
+    android:layout_height="@dimen/_77sdp"
+    android:layout_margin="6dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cardCornerRadius="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +30,7 @@
         android:layout_height="32dp"
         android:layout_marginTop="-5dp"
         android:layout_marginEnd="-5dp"
+        android:contentDescription="@string/cancel"
         android:visibility="gone"
         android:elevation="4dp"
         android:padding="4dp"
