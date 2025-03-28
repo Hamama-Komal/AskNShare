@@ -29,11 +29,8 @@ import com.example.asknshare.ui.custom.CustomDialog
 import com.example.asknshare.utils.Constants
 import com.example.asknshare.viewmodels.TagViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.database.DatabaseError
 import java.io.File
 import java.util.UUID
 import android.Manifest
@@ -61,6 +58,9 @@ class PostQuestionActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Set Status Bar Color to Light Blue
+        window.statusBarColor = ContextCompat.getColor(this, R.color.app_light_blue)
 
 
         tagViewModel = ViewModelProvider(this)[TagViewModel::class.java]

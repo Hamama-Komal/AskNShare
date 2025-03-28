@@ -1,5 +1,6 @@
 package com.example.asknshare.ui.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.asknshare.R
 import com.example.asknshare.databinding.LatestQuestionRecyclerItemBinding
 import com.example.asknshare.models.Post
+import com.example.asknshare.ui.activities.FullViewActivity
 import com.example.asknshare.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -43,6 +45,7 @@ class PostAdapter(private val postList: List<Post>) : RecyclerView.Adapter<PostA
         // Set post details
         binding.textViewPostTime.text = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date(post.timestamp))
         binding.postText.text = post.body
+        binding.postTitle.text = post.heading
 
         binding.textViewUserFullName.text = post.postedByFullName
         binding.textViewUserName.text = post.postedByUsername
@@ -53,10 +56,10 @@ class PostAdapter(private val postList: List<Post>) : RecyclerView.Adapter<PostA
             .into(binding.profilePicHolder)
 
 
-        binding.comments.text = (post.replies.size ?: 0).toString()
-        binding.likes.text = (post.upVotes.size ?: 0).toString()
-        binding.dislikes.text = (post.downVotes.size ?: 0).toString()
-        binding.views.text = (post.views ?: 0).toString()
+        binding.replyText.text = (post.replies.size ?: 0).toString()
+        binding.upvoteText.text = (post.upVotes.size ?: 0).toString()
+        binding.downvoteText.text = (post.downVotes.size ?: 0).toString()
+        binding.viewsText.text = (post.views ?: 0).toString()
 
 
 
@@ -64,51 +67,58 @@ class PostAdapter(private val postList: List<Post>) : RecyclerView.Adapter<PostA
         val imageAdapter = ImageAdapter(post.images.values.toList())
         binding.imageRecycler.layoutManager = GridLayoutManager(holder.itemView.context, 3)
         binding.imageRecycler.adapter = imageAdapter
-        
+
+
+        // Handle Post Click - Open FullViewActivity
+        binding.root.setOnClickListener {
+            val intent = Intent(holder.itemView.context, FullViewActivity::class.java)
+            intent.putExtra("postId", post.postId)
+            holder.itemView.context.startActivity(intent)
+        }
 
         // Update vote counts and check user vote status
         updateVoteCounts(postRef, binding)
         checkUserVoteStatus(postRef, binding, userId)
 
         // Handle Upvote Click
-        binding.likes.setOnClickListener {
+        binding.upvoteBox.setOnClickListener {
             postRef.child(Constants.POST_UP_VOTES).child(userId).get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
                     // Remove upvote
                     postRef.child(Constants.POST_UP_VOTES).child(userId).removeValue()
-                    binding.likes.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_likes, 0, 0, 0)
+                    binding.upvoteIcon.setImageResource(R.drawable.ic_upvotes)
                 } else {
                     // Add upvote
                     postRef.child(Constants.POST_UP_VOTES).child(userId).setValue(true)
-                    binding.likes.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_selected_like, 0, 0, 0)
+                    binding.upvoteIcon.setImageResource(R.drawable.ic_selected_upvotes)
 
                     // Remove downvote if exists
                     postRef.child(Constants.POST_DOWN_VOTES).child(userId).removeValue()
-                    binding.dislikes.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dislike, 0, 0, 0)
+                    binding.upvoteIcon.setImageResource(R.drawable.ic_upvotes)
                 }
                 updateVoteCounts(postRef, binding)
-                checkUserVoteStatus(postRef, binding, userId)  // 🔹 Update icon state
+                checkUserVoteStatus(postRef, binding, userId)
             }
         }
 
         // Handle Downvote Click
-        binding.dislikes.setOnClickListener {
+        binding.downvoteBox.setOnClickListener {
             postRef.child(Constants.POST_DOWN_VOTES).child(userId).get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
                     // Remove downvote
                     postRef.child(Constants.POST_DOWN_VOTES).child(userId).removeValue()
-                    binding.dislikes.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dislike, 0, 0, 0)
+                    binding.downvoteIcon.setImageResource(R.drawable.ic_downvotes)
                 } else {
                     // Add downvote
                     postRef.child(Constants.POST_DOWN_VOTES).child(userId).setValue(true)
-                    binding.dislikes.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_selected_dislike, 0, 0, 0)
+                    binding.downvoteIcon.setImageResource(R.drawable.ic_selected_downvotes)
 
                     // Remove upvote if exists
                     postRef.child(Constants.POST_UP_VOTES).child(userId).removeValue()
-                    binding.likes.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_likes, 0, 0, 0)
+                    binding.downvoteIcon.setImageResource(R.drawable.ic_downvotes)
                 }
                 updateVoteCounts(postRef, binding)
-                checkUserVoteStatus(postRef, binding, userId)  // 🔹 Update icon state
+                checkUserVoteStatus(postRef, binding, userId)
             }
         }
     }
@@ -117,9 +127,9 @@ class PostAdapter(private val postList: List<Post>) : RecyclerView.Adapter<PostA
         postRef.child(Constants.POST_UP_VOTES).child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    binding.likes.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_selected_like, 0, 0, 0)
+                    binding.upvoteIcon.setImageResource(R.drawable.ic_selected_upvotes)
                 } else {
-                    binding.likes.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_likes, 0, 0, 0)
+                    binding.upvoteIcon.setImageResource(R.drawable.ic_upvotes)
                 }
             }
 
@@ -129,9 +139,9 @@ class PostAdapter(private val postList: List<Post>) : RecyclerView.Adapter<PostA
         postRef.child(Constants.POST_DOWN_VOTES).child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    binding.dislikes.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_selected_dislike, 0, 0, 0)
+                    binding.downvoteIcon.setImageResource(R.drawable.ic_selected_downvotes)
                 } else {
-                    binding.dislikes.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_dislike, 0, 0, 0)
+                    binding.downvoteIcon.setImageResource(R.drawable.ic_downvotes)
                 }
             }
 
@@ -144,7 +154,7 @@ class PostAdapter(private val postList: List<Post>) : RecyclerView.Adapter<PostA
         postRef.child(Constants.POST_UP_VOTES).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val upvoteCount = snapshot.childrenCount.toInt()
-                binding.likes.text = upvoteCount.toString()
+                binding.upvoteText.text = upvoteCount.toString()
             }
 
             override fun onCancelled(error: DatabaseError) {}
@@ -153,7 +163,7 @@ class PostAdapter(private val postList: List<Post>) : RecyclerView.Adapter<PostA
         postRef.child(Constants.POST_DOWN_VOTES).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val downvoteCount = snapshot.childrenCount.toInt()
-                binding.dislikes.text = downvoteCount.toString()
+                binding.downvoteText.text = downvoteCount.toString()
             }
 
             override fun onCancelled(error: DatabaseError) {}
@@ -162,7 +172,7 @@ class PostAdapter(private val postList: List<Post>) : RecyclerView.Adapter<PostA
         postRef.child(Constants.POST_REPLIES).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val commentCount = snapshot.childrenCount.toInt()
-                binding.comments.text = commentCount.toString()
+                binding.replyText.text = commentCount.toString()
             }
 
             override fun onCancelled(error: DatabaseError) {}
@@ -171,7 +181,7 @@ class PostAdapter(private val postList: List<Post>) : RecyclerView.Adapter<PostA
         postRef.child(Constants.POST_VIEWS).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val views = snapshot.getValue(Int::class.java) ?: 0
-                binding.views.text = views.toString()
+                binding.viewsText.text = views.toString()
             }
 
             override fun onCancelled(error: DatabaseError) {}
