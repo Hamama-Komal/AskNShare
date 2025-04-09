@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="7dp"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="@string/hello_user_fullname"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="@string/user123"
+                android:text=""
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintEnd_toEndOf="@+id/textViewUserFullName"
@@ -101,7 +101,7 @@
                 android:layout_marginTop="12dp"
                 android:fontFamily="@font/montserrat_medium"
                 android:maxLines="2"
-                android:text="@string/get_ai_help"
+                android:text=""
                 android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp"
@@ -130,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
-                    android:text="@string/dummy_text"
+                    android:text=""
                     android:textAlignment="viewStart"
                     android:textColor="@color/light_grey"
                     android:textSize="@dimen/_14ssp"
@@ -312,9 +312,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

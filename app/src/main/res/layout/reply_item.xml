@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
-    android:background="@color/white"
+    android:background="#E7F4F4F2"
     android:orientation="vertical"
     android:padding="5dp">
 
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:fontFamily="@font/montserrat_medium"
-            android:text="@string/user123"
+            android:text=""
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="@+id/card_profile_pic"
@@ -56,7 +56,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/montserrat_light"
-            android:text="@string/_12_min_ago"
+            android:text=""
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/_8ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:fontFamily="@font/montserrat"
-            android:text="@string/dummy_text"
+            android:text=""
             android:textAlignment="viewStart"
             android:textColor="@color/light_grey"
             android:textSize="@dimen/_12ssp"
@@ -98,7 +98,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingVertical="3dp"
-            android:weightSum="2"
+            android:weightSum="4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -132,6 +132,7 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/_12ssp" />
             </LinearLayout>
+
 
             <!-- Dislikes -->
             <LinearLayout
