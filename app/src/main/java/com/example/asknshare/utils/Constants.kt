@@ -23,7 +23,27 @@ object Constants {
     const val BIO = "bio"
     const val POSTED_QUESTIONS = "posted_questions"
     const val BOOKMARKED_QUESTIONS = "bookmarked_questions"
-    const val POSTED_ANSWERS = "posted_anwers"
+    const val POSTED_ANSWERS = "posted_answers"
+    const val POSTS_IMAGES_NODE = "post_images"
+    const val POSTS_NODE = "Posts"
+    const val POSTED_BY_UID = "postedByUid"
+    const val POSTED_BY_FULL_NAME = "postedByFullName"
+    const val POSTED_BY_USERNAME = "postedByUsername"
+    const val POSTED_BY_PROFILE = "postedByProfile"
+    const val POST_HEADING = "heading"
+    const val POST_BODY = "body"
+    const val POST_IMAGES = "images"
+    const val POST_TIME = "timestamp"
+    const val POST_UP_VOTES = "upVotes"
+    const val POST_DOWN_VOTES = "downVotes"
+    const val POST_VIEWS = "views"
+    const val POST_BOOKMARKS = "bookmarks"
+    const val POST_REPLIES = "replies"
+    const val POST_TAGS = "tags"
+    const val POST_ID = "postId"
+
+
+
 
 
 

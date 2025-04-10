@@ -1,7 +1,9 @@
 package com.example.asknshare.ui.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -12,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,16 +22,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.asknshare.R
 import com.example.asknshare.databinding.ActivityPostQuestionBinding
+import com.example.asknshare.repo.UserProfileRepo
 import com.example.asknshare.ui.adapters.GallaryImageAdapter
 import com.example.asknshare.ui.adapters.TagAdapter
 import com.example.asknshare.ui.custom.CustomDialog
+import com.example.asknshare.utils.Constants
 import com.example.asknshare.viewmodels.TagViewModel
-import com.github.drjacky.imagepicker.ImagePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 import java.util.UUID
+import android.Manifest
+
 
 
 class PostQuestionActivity : AppCompatActivity() {
@@ -41,6 +47,7 @@ class PostQuestionActivity : AppCompatActivity() {
     private var capturedImageUri: Uri? = null
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -51,6 +58,9 @@ class PostQuestionActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Set Status Bar Color to Light Blue
+        window.statusBarColor = ContextCompat.getColor(this, R.color.app_light_blue)
 
 
         tagViewModel = ViewModelProvider(this)[TagViewModel::class.java]
@@ -98,8 +108,13 @@ class PostQuestionActivity : AppCompatActivity() {
             pickMultipleImages()
         }
 
+
         binding.buttonCamera.setOnClickListener {
-            captureImageFromCamera()
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                captureImageFromCamera()
+            } else {
+                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
         }
 
 
@@ -168,11 +183,13 @@ class PostQuestionActivity : AppCompatActivity() {
 
     private fun captureImageFromCamera() {
         val imageFile = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "${System.currentTimeMillis()}.jpg")
-
         capturedImageUri = FileProvider.getUriForFile(this, "${packageName}.provider", imageFile)
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri)
+
+        // Grant URI permissions to avoid security issues
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
 
         if (intent.resolveActivity(packageManager) != null) {
             imagePickerLauncher.launch(intent)
@@ -180,6 +197,17 @@ class PostQuestionActivity : AppCompatActivity() {
             Toast.makeText(this, "No camera app found!", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private val cameraPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                captureImageFromCamera()  // Open camera if permission is granted
+            } else {
+                Toast.makeText(this, "Camera permission denied!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
 
 
     // Image Picker Launcher (Handles both Gallery & Camera)
@@ -210,7 +238,7 @@ class PostQuestionActivity : AppCompatActivity() {
         ActivityResultContracts.GetMultipleContents()
     ) { uris: List<Uri>? ->
         uris?.let {
-            imageList.addAll(it) // ✅ Add multiple images from gallery
+            imageList.addAll(it) // Add multiple images from gallery
             galleryAdapter.setMultipleImages(imageList)
 
             // Show RecyclerView if images are selected
@@ -230,14 +258,14 @@ class PostQuestionActivity : AppCompatActivity() {
         binding.recylerGalleryImg.visibility = View.GONE // Initially hidden
     }
 
-    // 🔹 Upload Images to Firebase Storage
+    // Upload Images to Firebase Storage
     private fun uploadImagesToFirebase() {
         if (imageList.isEmpty()) {
-            savePostToDatabase(mapOf()) // Save post even if no images
+            fetchUserDataAndSavePost(mapOf())
             return
         }
 
-        val storageRef = FirebaseStorage.getInstance().reference.child("post_images")
+        val storageRef = FirebaseStorage.getInstance().reference.child(Constants.POSTS_IMAGES_NODE)
         val imageUrls = mutableMapOf<String, String>()
         var uploadCount = 0
 
@@ -249,7 +277,7 @@ class PostQuestionActivity : AppCompatActivity() {
                     uploadCount++
 
                     if (uploadCount == imageList.size) {
-                        savePostToDatabase(imageUrls) // Save post after all images are uploaded
+                       fetchUserDataAndSavePost(imageUrls) // Save post after all images are uploaded
                     }
                 }
             }.addOnFailureListener {
@@ -258,36 +286,65 @@ class PostQuestionActivity : AppCompatActivity() {
         }
     }
 
-    // 🔹 Save Post to Firebase Realtime Database
-    private fun savePostToDatabase(imageUrls: Map<String, String>) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
-        val postId = FirebaseDatabase.getInstance().reference.child("Posts").push().key ?: return
+
+
+    // Function to fetch user data and then save the post
+    private fun fetchUserDataAndSavePost(imageUrls: Map<String, String>) {
+        UserProfileRepo.fetchUserProfile { userData ->
+            if (userData.isEmpty()) {
+                Toast.makeText(this@PostQuestionActivity, "User data not found!", Toast.LENGTH_SHORT).show()
+                return@fetchUserProfile
+            }
+
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
+            val fullName = userData[Constants.FULL_NAME] as? String ?: "Unknown"
+            val profileImage = userData[Constants.PROFILE_PIC] as? String ?: ""
+            val username = userData[Constants.USER_NAME] as? String ?: "anonymous"
+
+            savePostToDatabase(userId, fullName, profileImage, username, imageUrls)
+        }
+    }
+
+    // Function to save the post to Firebase
+    private fun savePostToDatabase(
+        userId: String,
+        fullName: String,
+        profileImage: String,
+        username: String,
+        imageUrls: Map<String, String>
+    ) {
+        val postId = FirebaseDatabase.getInstance().reference.child(Constants.POSTS_NODE).push().key ?: return
 
         val post = mapOf(
-            "postedBy" to userId,
-            "heading" to binding.questionTitle.text.toString().trim(),
-            "body" to binding.questionDescription.text.toString().trim(),
-            "images" to imageUrls,
-            "timestamp" to System.currentTimeMillis(),
-            "likes" to emptyMap<String, Boolean>(),
-            "dislikes" to emptyMap<String, Boolean>(),
-            "views" to 0,
-            "bookmarks" to emptyMap<String, Boolean>(),
-            "comments" to emptyMap<String, Any>(),
-            "tags" to tagViewModel.tags.value.orEmpty()
+            Constants.POST_ID to postId,
+            Constants.POSTED_BY_UID to userId,
+            Constants.POSTED_BY_FULL_NAME to fullName,
+            Constants.POSTED_BY_PROFILE to profileImage,
+            Constants.POSTED_BY_USERNAME to username,
+            Constants.POST_HEADING to binding.questionTitle.text.toString().trim(),
+            Constants.POST_BODY to binding.questionDescription.text.toString().trim(),
+            Constants.POST_IMAGES to imageUrls,
+            Constants.POST_TIME to System.currentTimeMillis(),
+            Constants.POST_UP_VOTES to emptyMap<String, Boolean>(),
+            Constants.POST_DOWN_VOTES to emptyMap<String, Boolean>(),
+            Constants.POST_VIEWS to 0,
+            Constants.POST_BOOKMARKS to emptyMap<String, Boolean>(),
+            Constants.POST_REPLIES to emptyMap<String, Any>(),
+            Constants.POST_TAGS to tagViewModel.tags.value.orEmpty()
         )
 
-        FirebaseDatabase.getInstance().reference.child("Posts").child(postId).setValue(post)
+        FirebaseDatabase.getInstance().reference.child(Constants.POSTS_NODE).child(postId).setValue(post)
             .addOnSuccessListener {
                 showLoading(false)
-                Toast.makeText(this, "Post uploaded successfully!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@PostQuestionActivity, "Post uploaded successfully!", Toast.LENGTH_SHORT).show()
                 finish() // Close activity
             }
             .addOnFailureListener {
                 showLoading(false)
-                Toast.makeText(this, "Failed to upload post!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@PostQuestionActivity, "Failed to upload post!", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {

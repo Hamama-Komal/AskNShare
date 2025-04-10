@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.asknshare.R
@@ -17,6 +18,10 @@ import com.example.asknshare.models.Post
 import com.example.asknshare.models.PostModel
 import com.example.asknshare.repo.UserProfileRepo
 import com.example.asknshare.utils.Constants
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class HomeFragment : Fragment() {
 
@@ -88,54 +93,40 @@ class HomeFragment : Fragment() {
     private fun setupLatestQuestionRecyclerView() {
 
         binding.latestQuestionRecycler.layoutManager = LinearLayoutManager(requireContext())
-
-        // Sample data
-        postList.add(
-            Post(
-                "John Doe",
-                "@johndoe",
-                "5 min ago",
-                "It is widely recognized that continuously scaling both data size and model size can lead to significant improvements in model intelligence. However, the research and industry community has limited experience in effectively scaling extremely large models, whether they are dense or Mixture-of-Expert (MoE) models. Many critical details regarding this scaling process were only disclosed with the recent release of DeepSeek V3. Concurrently, we are developing Qwen2.5-Max, a large-scale MoE model that has been pretrained on over 20 trillion tokens and further post-trained with curated Supervised Fine-Tuning (SFT) and Reinforcement Learning from Human Feedback (RLHF) methodologies. Today, we are excited to share the performance results of Qwen2.5-Max and announce the availability of its API through Alibaba Cloud. We also invite you to explore Qwen2.5-Max on Qwen Chat!",
-                listOf(
-                    "https://img.freepik.com/free-photo/programming-background-with-person-working-with-codes-computer_23-2150010130.jpg?semt=ais_hybrid",
-                    "https://img.freepik.com/free-photo/html-css-collage-concept_23-2150061955.jpg?ga=GA1.1.299229579.1737635648&semt=ais_hybrid",
-                    "https://img.freepik.com/free-photo/rear-view-programmer-working-all-night-long_1098-18697.jpg?ga=GA1.1.299229579.1737635648&semt=ais_hybrid"
-                ),
-                300, 50, 120, 5
-            )
-        )
-
-        postList.add(
-            Post(
-                "John Doe",
-                "@johndoe",
-                "10 min ago",
-                "This is a sample post!",
-                listOf(
-                    "https://img.freepik.com/free-photo/programming-background-with-person-working-with-codes-computer_23-2150010130.jpg?semt=ais_hybrid",
-                ),
-                300, 50, 120, 5
-            )
-        )
-
-        postList.add(
-            Post(
-                "John Doe",
-                "@johndoe",
-                "30 min ago",
-                "This is a sample post!",
-                listOf(),
-                300, 50, 120, 5
-            )
-        )
-
-
-
         postAdapter = PostAdapter(postList)
         binding.latestQuestionRecycler.adapter = postAdapter
         binding.latestQuestionRecycler.setHasFixedSize(true)
 
+        fetchLatestPostsFromFirebase()
+
     }
+
+    private fun fetchLatestPostsFromFirebase() {
+        val databaseRef = FirebaseDatabase.getInstance().getReference(Constants.POSTS_NODE)
+
+        databaseRef.orderByChild(Constants.POST_TIME).limitToLast(20)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    postList.clear()
+                    val tempList = mutableListOf<Post>()  // Temporary list to store posts
+
+                    for (postSnapshot in snapshot.children) {
+                        val post = postSnapshot.getValue(Post::class.java)
+                        post?.let { tempList.add(it) }
+                    }
+
+                    // Sort the list in descending order (latest first)
+                    postList.addAll(tempList.sortedByDescending { it.timestamp })
+                    postAdapter.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), "Failed to fetch posts", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+
 
     private fun setupLeaderboardRecyclerView() {
         leaderboardAdapter = LeaderboardAdapter(leaderboardList)

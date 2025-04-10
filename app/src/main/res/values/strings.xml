@@ -78,7 +78,7 @@
     <string name="save_changes">Save Changes</string>
     <string name="reply_to_post">Reply to Post</string>
     <string name="publish_reply">Publish Reply</string>
-    <string name="reply_to">Reply To</string>
+    <string name="reply_to">Reply</string>
     <string name="next">Next</string>
     <string name="ask1">Ask</string>
     <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
@@ -92,6 +92,11 @@
     <string name="warning">Warning</string>
     <string name="slow_or_poor_internet_connection">Slow or Poor Internet Connection</string>
     <string name="enter_tag">Enter tag</string>
+    <string name="views_icon">views icon</string>
+    <string name="comments_icon">reply icon</string>
+    <string name="downvotes_icon">downvotes icon</string>
+    <string name="_0">0</string>
+    <string name="type_here">Type here..</string>
     <string-array name="expertise_list">
         <item>Software Development</item>
         <item>Data Science</item>
