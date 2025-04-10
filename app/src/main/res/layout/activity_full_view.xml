@@ -14,100 +14,100 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp">
 
+        <ImageView
+            android:id="@+id/bookmark_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/my_bookmarks"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_bookmark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_profile_pic"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="99dp"
+            app:cardElevation="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <ImageView
-                android:id="@+id/bookmark_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:contentDescription="@string/my_bookmarks"
-                android:padding="@dimen/_10sdp"
-                android:src="@drawable/ic_bookmark"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_profile_pic"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="99dp"
-                app:cardElevation="2dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/profile_pic_holder"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/user"
-                    android:scaleType="centerCrop" />
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/textViewUserFullName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="7dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/card_profile_pic"
-                app:layout_constraintTop_toTopOf="@+id/card_profile_pic" />
-
-            <TextView
-                android:id="@+id/textViewUserName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text=""
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintEnd_toEndOf="@+id/textViewUserFullName"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserFullName"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserFullName" />
-
-            <TextView
-                android:id="@+id/textViewPostTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_light"
-                android:text="@string/_12_min_ago"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/_7ssp"
-                app:layout_constraintEnd_toEndOf="@+id/textViewUserName"
-                app:layout_constraintStart_toStartOf="@+id/card_profile_pic"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/divider"
+                android:id="@+id/profile_pic_holder"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="5dp"
-                android:background="@color/light_grey"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewPostTime" />
+                android:layout_height="match_parent"
+                android:background="@drawable/user"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/post_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:maxLines="2"
-                android:text=""
-                android:textAlignment="viewStart"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPostTime" />
+        <TextView
+            android:id="@+id/textViewUserFullName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="7dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toStartOf="@+id/bookmark_button"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/card_profile_pic"
+            app:layout_constraintTop_toTopOf="@+id/card_profile_pic" />
+
+        <TextView
+            android:id="@+id/textViewUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text=""
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="@+id/textViewUserFullName"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserFullName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserFullName" />
+
+        <TextView
+            android:id="@+id/textViewPostTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/montserrat_light"
+            android:text="@string/_12_min_ago"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_7ssp"
+            app:layout_constraintEnd_toEndOf="@+id/textViewUserName"
+            app:layout_constraintStart_toStartOf="@+id/card_profile_pic"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="5dp"
+            android:background="@color/light_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewPostTime" />
+
+        <TextView
+            android:id="@+id/post_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:maxLines="2"
+            android:text=""
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewPostTime" />
 
         <ScrollView
             android:id="@+id/scroll_view"
@@ -291,27 +291,21 @@
                     app:layout_constraintTop_toBottomOf="@id/options_layout" />
 
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button_reply_post"
-                    android:layout_width="@dimen/_160sdp"
-                    android:layout_height="@dimen/_38sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/blue_button"
-                    android:elevation="3dp"
-                    android:fontFamily="@font/montserrat"
-                    android:text="@string/reply_to_post"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_16ssp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/replies_recycler" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_reply_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/reply_to_post"
+            android:src="@drawable/ic_reply"
+            app:backgroundTint="@color/app_medium_blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
