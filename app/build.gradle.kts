@@ -86,11 +86,9 @@ dependencies {
     // Image Picker
     implementation("androidx.fragment:fragment-ktx:1.6.1")
     implementation("com.github.Drjacky:ImagePicker:2.3.22")
+    // Gemini AI
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 
-
-
-    // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-    // implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.20-Beta2")
 
 
 

@@ -43,7 +43,7 @@
             android:fontFamily="@font/montserrat_medium"
             android:text="@string/hello_user_fullname"
             android:textColor="@color/black"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toStartOf="@+id/textViewPostTime"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/card_profile_pic"
@@ -56,7 +56,7 @@
             android:fontFamily="@font/montserrat_medium"
             android:text="@string/user123"
             android:textColor="@color/dark_grey"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="@+id/textViewUserFullName"
             app:layout_constraintStart_toStartOf="@+id/textViewUserFullName"
             app:layout_constraintTop_toBottomOf="@+id/textViewUserFullName" />
@@ -70,25 +70,39 @@
             android:fontFamily="@font/montserrat_light"
             android:text="@string/_12_min_ago"
             android:textColor="@color/dark_grey"
-            android:textSize="@dimen/_10ssp"
+            android:textSize="@dimen/_8ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/post_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:maxLines="1"
+            android:text="@string/get_ai_help"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
 
         <TextView
             android:id="@+id/post_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/montserrat"
+            android:maxLines="3"
             android:text="@string/dummy_text"
             android:textAlignment="viewStart"
-            android:maxLines="7"
             android:textColor="@color/light_grey"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
-
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_title" />
       <!--  &lt;!&ndash; Image Grid &ndash;&gt;
 
         <androidx.recyclerview.widget.RecyclerView
