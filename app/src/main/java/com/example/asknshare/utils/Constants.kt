@@ -2,6 +2,8 @@ package com.example.asknshare.utils
 
 object Constants {
 
+    const val GEMINI_API_KEY = "AIzaSyAG_rvDVf1zUAIqde_MbYVvhvto_exsoO4"
+
     const val KEY_EMAIL = "EMAIL"
     const val KEY_USERNAME = "USERNAME"
     const val KEY_REGISTERED= "IS_REGISTERED"
