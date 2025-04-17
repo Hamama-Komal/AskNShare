@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import com.example.asknshare.R
 import com.example.asknshare.databinding.ActivityMainBinding
 import com.example.asknshare.repo.NetworkMonitor
-import com.example.asknshare.ui.custom.showCustomToast
 import com.example.asknshare.ui.fragments.AskFragment
 import com.example.asknshare.ui.fragments.HomeFragment
 import com.example.asknshare.ui.fragments.ProfileFragment
@@ -57,11 +56,6 @@ class MainActivity : AppCompatActivity() {
 
             fragment?.let { loadFragment(it) }
 
-        }
-
-        // Start monitoring the network
-        networkMonitor.startMonitoring {
-            showCustomToast(this, "Slow or Poor Internet Connection")
         }
 
     }

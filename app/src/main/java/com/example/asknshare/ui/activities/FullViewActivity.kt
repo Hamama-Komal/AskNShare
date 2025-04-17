@@ -1,6 +1,7 @@
 package com.example.asknshare.ui.activities
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -49,9 +50,13 @@ class FullViewActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.app_light_blue)
 
 
+        binding.mainLayout.visibility = View.GONE
+        binding.spinKit.visibility = View.VISIBLE
+
         postId = intent.getStringExtra("postId")
 
         if (postId == null) {
+            binding.spinKit.visibility = View.GONE
             Toast.makeText(this, "Error: Post not found!", Toast.LENGTH_SHORT).show()
             finish()
             return
@@ -79,8 +84,11 @@ class FullViewActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val post = snapshot.getValue(Post::class.java)
                 if (post != null) {
+                    binding.mainLayout.visibility = View.VISIBLE
+                    binding.spinKit.visibility = View.GONE
                     displayPostDetails(post)
                 } else {
+                    binding.spinKit.visibility = View.GONE
                     Toast.makeText(this@FullViewActivity, "Post not found", Toast.LENGTH_SHORT)
                         .show()
                     finish()
@@ -88,6 +96,7 @@ class FullViewActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
+                binding.spinKit.visibility = View.GONE
                 Toast.makeText(this@FullViewActivity, "Error loading post", Toast.LENGTH_SHORT)
                     .show()
             }

@@ -35,8 +35,6 @@ import java.io.File
 import java.util.UUID
 import android.Manifest
 
-
-
 class PostQuestionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPostQuestionBinding
@@ -45,6 +43,8 @@ class PostQuestionActivity : AppCompatActivity() {
     private lateinit var tagViewModel: TagViewModel
     private lateinit var tagAdapter: TagAdapter
     private var capturedImageUri: Uri? = null
+    private var isAnonymousPost: Boolean = false
+
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -61,6 +61,9 @@ class PostQuestionActivity : AppCompatActivity() {
 
         // Set Status Bar Color to Light Blue
         window.statusBarColor = ContextCompat.getColor(this, R.color.app_light_blue)
+
+        isAnonymousPost = intent.getBooleanExtra("isAnonymous", false)
+
 
 
         tagViewModel = ViewModelProvider(this)[TagViewModel::class.java]
@@ -180,7 +183,6 @@ class PostQuestionActivity : AppCompatActivity() {
         binding.tagInputLayout.visibility = View.GONE
     }
 
-
     private fun captureImageFromCamera() {
         val imageFile = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "${System.currentTimeMillis()}.jpg")
         capturedImageUri = FileProvider.getUriForFile(this, "${packageName}.provider", imageFile)
@@ -207,10 +209,6 @@ class PostQuestionActivity : AppCompatActivity() {
             }
         }
 
-
-
-
-    // Image Picker Launcher (Handles both Gallery & Camera)
     private val imagePickerLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -228,15 +226,11 @@ class PostQuestionActivity : AppCompatActivity() {
             }
         }
 
-
-    // Pick Multiple Images from Gallery
     private fun pickMultipleImages() {
         pickImagesLauncher.launch("image/*")
     }
 
-    private val pickImagesLauncher = registerForActivityResult(
-        ActivityResultContracts.GetMultipleContents()
-    ) { uris: List<Uri>? ->
+    private val pickImagesLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri>? ->
         uris?.let {
             imageList.addAll(it) // Add multiple images from gallery
             galleryAdapter.setMultipleImages(imageList)
@@ -249,7 +243,6 @@ class PostQuestionActivity : AppCompatActivity() {
         }
     }
 
-    //  Initializes RecyclerView for displaying selected images
     private fun setupRecyclerView() {
         galleryAdapter = GallaryImageAdapter(imageList)
         binding.recylerGalleryImg.layoutManager =
@@ -287,23 +280,35 @@ class PostQuestionActivity : AppCompatActivity() {
     }
 
 
-
-    // Function to fetch user data and then save the post
     private fun fetchUserDataAndSavePost(imageUrls: Map<String, String>) {
-        UserProfileRepo.fetchUserProfile { userData ->
-            if (userData.isEmpty()) {
-                Toast.makeText(this@PostQuestionActivity, "User data not found!", Toast.LENGTH_SHORT).show()
-                return@fetchUserProfile
+        if (isAnonymousPost) {
+            // Use dummy anonymous data
+            val anonymousId = "anonymous_${System.currentTimeMillis()}"
+            savePostToDatabase(
+                userId = anonymousId,
+                fullName = "Anonymous",
+                profileImage = "",
+                username = "Anonymous",
+                imageUrls = imageUrls
+            )
+        } else {
+            // Normal fetch
+            UserProfileRepo.fetchUserProfile { userData ->
+                if (userData.isEmpty()) {
+                    Toast.makeText(this@PostQuestionActivity, "User data not found!", Toast.LENGTH_SHORT).show()
+                    return@fetchUserProfile
+                }
+
+                val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
+                val fullName = userData[Constants.FULL_NAME] as? String ?: "Unknown"
+                val profileImage = userData[Constants.PROFILE_PIC] as? String ?: ""
+                val username = userData[Constants.USER_NAME] as? String ?: "anonymous"
+
+                savePostToDatabase(userId, fullName, profileImage, username, imageUrls)
             }
-
-            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
-            val fullName = userData[Constants.FULL_NAME] as? String ?: "Unknown"
-            val profileImage = userData[Constants.PROFILE_PIC] as? String ?: ""
-            val username = userData[Constants.USER_NAME] as? String ?: "anonymous"
-
-            savePostToDatabase(userId, fullName, profileImage, username, imageUrls)
         }
     }
+
 
     // Function to save the post to Firebase
     private fun savePostToDatabase(

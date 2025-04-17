@@ -98,6 +98,7 @@
     <string name="_0">0</string>
     <string name="type_here">Type here..</string>
     <string name="type_a_message">Type a message</string>
+    <string name="no_posts_found_for_this_tag">No posts found for this tag</string>
     <string-array name="expertise_list">
         <item>Software Development</item>
         <item>Data Science</item>

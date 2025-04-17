@@ -19,43 +19,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_search"
-        android:layout_width="@dimen/_32sdp"
-        android:layout_height="@dimen/_32sdp"
-        android:layout_marginStart="20dp"
-        android:padding="10dp"
-        app:cardCornerRadius="7dp"
-        app:cardElevation="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view"
-        app:layout_constraintVertical_bias="0.483">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="7dp"
-            android:background="@drawable/ic_search"
-            android:scaleType="centerCrop" />
-
-    </androidx.cardview.widget.CardView>
-
+    <!-- Search Text -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_search_text"
         android:layout_width="0dp"
         android:layout_height="@dimen/_32sdp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
         android:padding="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="10dp"
         app:cardCornerRadius="7dp"
         app:cardElevation="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/card_search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/card_search"
-        app:layout_constraintTop_toTopOf="@+id/card_search">
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toStartOf="@+id/card_search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view">
 
         <EditText
+            android:id="@+id/search_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
@@ -63,10 +43,34 @@
             android:hint="@string/search"
             android:padding="5dp"
             android:maxLines="1"
+            android:inputType="text"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
-
     </androidx.cardview.widget.CardView>
+
+    <!-- Search Icon Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_search"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_marginEnd="20dp"
+        android:padding="6dp"
+        app:cardCornerRadius="7dp"
+        app:cardElevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="3dp"
+            android:background="@drawable/ic_search"
+            android:scaleType="centerCrop" />
+    </androidx.cardview.widget.CardView>
+
 
 
     <TextView
