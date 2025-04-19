@@ -13,7 +13,7 @@ data class Post(
     val upVotes: Map<String, Boolean> = emptyMap(),
     val downVotes: Map<String, Boolean> = emptyMap(),
     val views: Int = 0,
-    val bookmarks: Map<String, Boolean> = emptyMap(),
+    var bookmarks: Map<String, Boolean> = emptyMap(),
     val replies: Map<String, Any> = emptyMap(),
     val tags: List<String> = emptyList()
 )

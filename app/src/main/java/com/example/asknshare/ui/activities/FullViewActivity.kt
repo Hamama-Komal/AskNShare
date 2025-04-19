@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -19,6 +20,8 @@ import com.example.asknshare.ui.adapters.ReplyAdapter
 import com.example.asknshare.models.Reply
 import com.example.asknshare.ui.adapters.ImageAdapter
 import com.example.asknshare.utils.Constants
+import com.example.asknshare.viewmodels.BookmarkViewModel
+import com.example.asknshare.viewmodels.VoteViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -32,8 +35,10 @@ class FullViewActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFullViewBinding
     private lateinit var postRef: DatabaseReference
-    private var postId: String? = null
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+    private lateinit var bookmarkViewModel: BookmarkViewModel
+    private lateinit var voteViewModel: VoteViewModel
+    private var currentPost: Post? = null
+    private val userId by lazy { FirebaseAuth.getInstance().currentUser?.uid.orEmpty() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,59 +51,110 @@ class FullViewActivity : AppCompatActivity() {
             insets
         }
 
-        // Set Status Bar Color to Light Blue
         window.statusBarColor = ContextCompat.getColor(this, R.color.app_light_blue)
 
+        // ViewModels
+        bookmarkViewModel = ViewModelProvider(this).get(BookmarkViewModel::class.java)
+        voteViewModel = ViewModelProvider(this).get(VoteViewModel::class.java)
+        subscribeBookmarkState()
+        subscribeVoteState()
 
         binding.mainLayout.visibility = View.GONE
         binding.spinKit.visibility = View.VISIBLE
 
-        postId = intent.getStringExtra("postId")
-
-        if (postId == null) {
+        val postId = intent.getStringExtra("postId")
+        if (postId.isNullOrEmpty()) {
             binding.spinKit.visibility = View.GONE
             Toast.makeText(this, "Error: Post not found!", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
 
-        postRef = FirebaseDatabase.getInstance().getReference(Constants.POSTS_NODE).child(postId!!)
+        postRef = FirebaseDatabase
+            .getInstance()
+            .getReference(Constants.POSTS_NODE)
+            .child(postId)
 
         fetchPostData()
         incrementViewCount()
 
-        // Open Bottom Sheet on button click
         binding.buttonReplyPost.setOnClickListener {
-            val bottomSheet = ReplyBottomSheetDialog()
-            val bundle = Bundle()
-            bundle.putString("postId", postId) // Pass postId
-            bottomSheet.arguments = bundle
-            bottomSheet.show(supportFragmentManager, "ReplyBottomSheetDialog")
+            ReplyBottomSheetDialog().apply {
+                arguments = Bundle().apply { putString("postId", postId) }
+            }.show(supportFragmentManager, "ReplyBottomSheetDialog")
         }
 
+        binding.bookmarkButton.setOnClickListener {
+            currentPost?.let { post ->
+                FirebaseAuth.getInstance().currentUser?.email?.let { email ->
+                    bookmarkViewModel.toggleBookmark(post, email)
+                }
+            }
+        }
+
+        binding.upvoteBox.setOnClickListener {
+            currentPost?.postId?.let { voteViewModel.toggleUpVote(it, userId) }
+        }
+
+        binding.downvoteBox.setOnClickListener {
+            currentPost?.postId?.let { voteViewModel.toggleDownVote(it, userId) }
+        }
     }
 
+    private fun subscribeBookmarkState() {
+        bookmarkViewModel.bookmarkedPosts.observe(this) { posts ->
+            val isBookmarked = currentPost?.let { post ->
+                posts.any { it.postId == post.postId }
+            } ?: false
+            binding.bookmarkButton.setImageResource(
+                if (isBookmarked) R.drawable.ic_selected_bookmark else R.drawable.ic_bookmark
+            )
+        }
+    }
+
+    private fun subscribeVoteState() {
+        voteViewModel.upvoteCount.observe(this) { count ->
+            binding.upvoteText.text = count.toString()
+        }
+        voteViewModel.downvoteCount.observe(this) { count ->
+            binding.downvoteText.text = count.toString()
+        }
+        voteViewModel.userUpvoted.observe(this) { upvoted ->
+            binding.upvoteIcon.setImageResource(
+                if (upvoted) R.drawable.ic_selected_upvotes else R.drawable.ic_upvotes
+            )
+        }
+        voteViewModel.userDownvoted.observe(this) { downvoted ->
+            binding.downvoteIcon.setImageResource(
+                if (downvoted) R.drawable.ic_selected_downvotes else R.drawable.ic_downvotes
+            )
+        }
+    }
 
     private fun fetchPostData() {
         postRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val post = snapshot.getValue(Post::class.java)
                 if (post != null) {
+                    currentPost = post
                     binding.mainLayout.visibility = View.VISIBLE
                     binding.spinKit.visibility = View.GONE
                     displayPostDetails(post)
+
+                    // load bookmark list & vote status
+                    FirebaseAuth.getInstance().currentUser?.email?.let {
+                        bookmarkViewModel.fetchBookmarkedPosts(it)
+                    }
+                    voteViewModel.fetchVoteStatus(post.postId, userId)
                 } else {
                     binding.spinKit.visibility = View.GONE
-                    Toast.makeText(this@FullViewActivity, "Post not found", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this@FullViewActivity, "Post not found", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 binding.spinKit.visibility = View.GONE
-                Toast.makeText(this@FullViewActivity, "Error loading post", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this@FullViewActivity, "Error loading post", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -108,182 +164,50 @@ class FullViewActivity : AppCompatActivity() {
         binding.textViewUserName.text = post.postedByUsername
         binding.postTitle.text = post.heading
         binding.postText.text = post.body
-        binding.textViewPostTime.text =
-            java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault())
-                .format(java.util.Date(post.timestamp))
+        binding.textViewPostTime.text = java.text.SimpleDateFormat(
+            "dd MMM yyyy", java.util.Locale.getDefault()
+        ).format(java.util.Date(post.timestamp))
 
-        // Load profile picture
-        Glide.with(this).load(post.postedByProfile).placeholder(R.drawable.user)
+        Glide.with(this)
+            .load(post.postedByProfile)
+            .placeholder(R.drawable.user)
             .into(binding.profilePicHolder)
 
-        // Set Views, Likes, and Comments Count
-        binding.viewsText.text = post.views.toString()
-        binding.upvoteText.text = post.upVotes.size.toString()
-        binding.downvoteText.text = post.downVotes.size.toString()
-        binding.replyText.text = post.replies.size.toString()
-
-        // Load Images into ImageRecycler
-        val imageAdapter = ImageAdapter(post.images.values.toList())
-        binding.imageRecycler.layoutManager = GridLayoutManager(this, 3)
-        binding.imageRecycler.adapter = imageAdapter
-
-        // Load replies in RecyclerView
-        val replyList = mutableListOf<Reply>()
-        val replyAdapter = ReplyAdapter(replyList)
+        // Replies
+        val replies = mutableListOf<Reply>()
+        val replyAdapter = ReplyAdapter(replies)
         binding.repliesRecycler.layoutManager = LinearLayoutManager(this)
         binding.repliesRecycler.adapter = replyAdapter
-
-        postRef.child("replies").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                replyList.clear()
-                for (replySnapshot in snapshot.children) {
-                    val reply = replySnapshot.getValue(Reply::class.java)
-                    if (reply != null) {
-                        replyList.add(reply)
-                    }
-                }
-                replyAdapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-
-
-        // Update vote counts and check user vote status
-        updateVoteCounts(postRef, binding)
-        checkUserVoteStatus(postRef, binding, userId)
-
-        // Handle Upvote Click
-        binding.upvoteBox.setOnClickListener {
-            postRef.child(Constants.POST_UP_VOTES).child(userId).get()
-                .addOnSuccessListener { snapshot ->
-                    if (snapshot.exists()) {
-                        // Remove upvote
-                        postRef.child(Constants.POST_UP_VOTES).child(userId).removeValue()
-                        binding.upvoteIcon.setImageResource(R.drawable.ic_upvotes)
-                    } else {
-                        // Add upvote
-                        postRef.child(Constants.POST_UP_VOTES).child(userId).setValue(true)
-                        binding.upvoteIcon.setImageResource(R.drawable.ic_selected_upvotes)
-
-                        // Remove downvote if exists
-                        postRef.child(Constants.POST_DOWN_VOTES).child(userId).removeValue()
-                        binding.upvoteIcon.setImageResource(R.drawable.ic_upvotes)
-                    }
-                    updateVoteCounts(postRef, binding)
-                    checkUserVoteStatus(postRef, binding, userId)
-                }
-        }
-
-        // Handle Downvote Click
-        binding.downvoteBox.setOnClickListener {
-            postRef.child(Constants.POST_DOWN_VOTES).child(userId).get()
-                .addOnSuccessListener { snapshot ->
-                    if (snapshot.exists()) {
-                        // Remove downvote
-                        postRef.child(Constants.POST_DOWN_VOTES).child(userId).removeValue()
-                        binding.downvoteIcon.setImageResource(R.drawable.ic_downvotes)
-                    } else {
-                        // Add downvote
-                        postRef.child(Constants.POST_DOWN_VOTES).child(userId).setValue(true)
-                        binding.downvoteIcon.setImageResource(R.drawable.ic_selected_downvotes)
-
-                        // Remove upvote if exists
-                        postRef.child(Constants.POST_UP_VOTES).child(userId).removeValue()
-                        binding.downvoteIcon.setImageResource(R.drawable.ic_downvotes)
-                    }
-                    updateVoteCounts(postRef, binding)
-                    checkUserVoteStatus(postRef, binding, userId)
-                }
-        }
-    }
-
-    private fun updateVoteCounts(postRef: DatabaseReference, binding: ActivityFullViewBinding) {
-        postRef.child(Constants.POST_UP_VOTES).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val upvoteCount = snapshot.childrenCount.toInt()
-                binding.upvoteText.text = upvoteCount.toString()
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-
-        postRef.child(Constants.POST_DOWN_VOTES).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val downvoteCount = snapshot.childrenCount.toInt()
-                binding.downvoteText.text = downvoteCount.toString()
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-
         postRef.child(Constants.POST_REPLIES).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val commentCount = snapshot.childrenCount.toInt()
-                binding.replyText.text = commentCount.toString()
+                replies.clear()
+                snapshot.children.mapNotNull { it.getValue(Reply::class.java) }
+                    .also { replies.addAll(it) }
+                replyAdapter.notifyDataSetChanged()
             }
-
             override fun onCancelled(error: DatabaseError) {}
         })
 
-        postRef.child(Constants.POST_VIEWS).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val views = snapshot.getValue(Int::class.java) ?: 0
-                binding.viewsText.text = views.toString()
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-
+        // Images
+        binding.imageRecycler.layoutManager = GridLayoutManager(this, 3)
+        binding.imageRecycler.adapter = ImageAdapter(post.images.values.toList())
     }
 
     private fun incrementViewCount() {
         postRef.child(Constants.POST_VIEWS).runTransaction(object : Transaction.Handler {
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
-                val currentViews = mutableData.getValue(Int::class.java) ?: 0
-                mutableData.value = currentViews + 1
+                val current = mutableData.getValue(Int::class.java) ?: 0
+                mutableData.value = current + 1
                 return Transaction.success(mutableData)
             }
-
-            override fun onComplete(
-                databaseError: DatabaseError?, committed: Boolean, dataSnapshot: DataSnapshot?
-            ) {
-                if (databaseError != null) {
-                    Toast.makeText(
-                        this@FullViewActivity, "Failed to update views", Toast.LENGTH_SHORT
-                    ).show()
-                }
+            override fun onComplete(error: DatabaseError?, committed: Boolean, data: DataSnapshot?) {
+                if (error != null) Toast.makeText(
+                    this@FullViewActivity,
+                    "Failed to update views",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
-    }
-
-    private fun checkUserVoteStatus(postRef: DatabaseReference, binding: ActivityFullViewBinding, userId: String){
-
-        postRef.child(Constants.POST_UP_VOTES).child(userId)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        binding.upvoteIcon.setImageResource(R.drawable.ic_selected_upvotes)
-                    } else {
-                        binding.upvoteIcon.setImageResource(R.drawable.ic_upvotes)
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {}
-            })
-
-        postRef.child(Constants.POST_DOWN_VOTES).child(userId)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        binding.downvoteIcon.setImageResource(R.drawable.ic_selected_downvotes)
-                    } else {
-                        binding.downvoteIcon.setImageResource(R.drawable.ic_downvotes)
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {}
-            })
     }
 
 }

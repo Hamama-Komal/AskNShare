@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/app_grey"
+        android:elevation="4dp"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="Bookmarks"
+        app:titleTextColor="@color/black" />
+
+    <!-- No Bookmarks UI -->
+    <LinearLayout
+        android:id="@+id/no_bookmarks_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="40dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/no_bookmarks_image"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/no_bookmark_found"
+            android:src="@drawable/ic_bookmarks" />
+
+        <TextView
+            android:id="@+id/no_bookmarks_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:text="@string/no_bookmark_found"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_14ssp" />
+    </LinearLayout>
+
+    <!-- Bookmarks List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_bookmarks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:visibility="gone" />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Large"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:SpinKit_Color="@color/app_dark_blue"
+        app:SpinKit_Style="Pulse" />
+
+</LinearLayout>

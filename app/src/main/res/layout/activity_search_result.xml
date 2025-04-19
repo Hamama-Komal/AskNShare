@@ -8,10 +8,6 @@
     android:orientation="vertical">
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <!-- Header Section for Searched Keyword -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +64,7 @@
             android:id="@+id/recycler_search_results"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
+            android:padding="8dp"
             android:paddingTop="8dp"
             android:visibility="visible" />
 
@@ -81,7 +77,6 @@
             android:visibility="gone"
             app:SpinKit_Color="@color/app_dark_blue"
             app:SpinKit_Style="Pulse" />
-    </FrameLayout>
 
 
 </LinearLayout>

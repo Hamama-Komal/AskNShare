@@ -14,6 +14,7 @@ import com.example.asknshare.data.local.DataStoreHelper
 import com.example.asknshare.ui.activities.EditProfileActivity
 import com.example.asknshare.databinding.FragmentProfileBinding
 import com.example.asknshare.repo.UserProfileRepo
+import com.example.asknshare.ui.activities.BookmarkActivity
 import com.example.asknshare.ui.activities.WelcomeActivity
 import com.example.asknshare.ui.custom.CustomDialog
 import com.example.asknshare.utils.Constants
@@ -40,6 +41,10 @@ class ProfileFragment : Fragment() {
 
         binding.buttonEditProfile.setOnClickListener {
             startActivity(Intent(context, EditProfileActivity::class.java))
+        }
+
+        binding.bookmarks.setOnClickListener {
+            startActivity(Intent(context, BookmarkActivity::class.java))
         }
 
         binding.logout.setOnClickListener {
