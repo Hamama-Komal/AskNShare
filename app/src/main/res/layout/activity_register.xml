@@ -313,7 +313,7 @@
         android:layout_gravity="center"
         android:visibility="gone"
         android:elevation="10dp"
-        app:SpinKit_Style="WanderingCubes"
+        app:SpinKit_Style="Pulse"
         app:SpinKit_Color="@color/app_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

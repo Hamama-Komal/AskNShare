@@ -8,39 +8,41 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.asknshare.R
+import com.example.asknshare.databinding.PopularTagItemBinding
 import com.example.asknshare.models.TagModel
 
 
-class TagsAdapter(private val tagList: List<TagModel>) :
-    RecyclerView.Adapter<TagsAdapter.TagViewHolder>() {
+class TagsAdapter(
+    private val tagList: List<TagModel>,
+    private val onTagClick: (String) -> Unit
+) : RecyclerView.Adapter<TagsAdapter.TagViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.popular_tag_item, parent, false)
-        return TagViewHolder(view)
+        val binding = PopularTagItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TagViewHolder(binding, onTagClick)
     }
 
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
-        val tag = tagList[position]
-        holder.bind(tag)
+        holder.bind(tagList[position])
     }
 
     override fun getItemCount(): Int = tagList.size
 
-    class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val imageView: ImageView = itemView.findViewById(R.id.tag_vector)
-        private val tagName: TextView = itemView.findViewById(R.id.tag_name)
+    class TagViewHolder(
+        private val binding: PopularTagItemBinding,
+        private val onTagClick: (String) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(tag: TagModel) {
-            tagName.text = tag.name
+            binding.tagName.text = tag.name
+            binding.tagVector.setImageResource(tag.drawableResId)
 
-            // Load image from Firebase Storage using Glide
-            Glide.with(itemView.context)
-                .load(tag.imageUrl)
-                .placeholder(R.drawable.user) // Set placeholder image
-                .into(imageView)
+            binding.root.setOnClickListener {
+                onTagClick(tag.name)
+            }
         }
     }
 }
+
 
 

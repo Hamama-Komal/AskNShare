@@ -27,11 +27,15 @@ class AskFragment : Fragment() {
 
 
         binding.buttonPostQuestion.setOnClickListener {
-            startActivity(Intent(context, PostQuestionActivity::class.java))
+            val intent = Intent(context, PostQuestionActivity::class.java)
+            intent.putExtra("isAnonymous", false)
+            startActivity(intent)
         }
 
          binding.buttonPostAnonymous.setOnClickListener {
-            startActivity(Intent(context, PostQuestionActivity::class.java))
+             val intent = Intent(context, PostQuestionActivity::class.java)
+             intent.putExtra("isAnonymous", true)
+             startActivity(intent)
         }
 
          binding.buttonAi.setOnClickListener {

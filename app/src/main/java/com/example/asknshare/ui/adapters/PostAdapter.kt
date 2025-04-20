@@ -21,7 +21,12 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class PostAdapter(private val postList: List<Post>) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+class PostAdapter(private var postList: List<Post>) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+
+    fun updateList(newList: List<Post>) {
+        postList = newList
+        notifyDataSetChanged()
+    }
 
     inner class PostViewHolder(val binding: LatestQuestionRecyclerItemBinding) : RecyclerView.ViewHolder(binding.root)
 

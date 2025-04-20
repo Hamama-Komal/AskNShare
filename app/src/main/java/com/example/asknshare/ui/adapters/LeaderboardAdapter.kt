@@ -4,6 +4,8 @@ package com.example.asknshare.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.asknshare.R
 import com.example.asknshare.databinding.LeaderboardRecyclerItemBinding
 import com.example.asknshare.models.LeaderboardItem
 
@@ -14,8 +16,12 @@ class LeaderboardAdapter(private val leaderboardList: List<LeaderboardItem>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: LeaderboardItem) {
-            binding.leaderPicHolder.setImageResource(item.imageRes)
-            binding.textViewLeaderName.text = item.name
+            Glide.with(binding.root.context)
+                .load(item.profilePic)
+                .placeholder(R.drawable.user)
+                .into(binding.leaderPicHolder)
+
+            binding.textViewLeaderName.text = item.userName
             binding.textViewLeaderPoints.text = item.points
             binding.textViewLeaderTitle.text = item.title
         }

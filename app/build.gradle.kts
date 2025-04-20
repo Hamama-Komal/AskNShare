@@ -88,6 +88,8 @@ dependencies {
     implementation("com.github.Drjacky:ImagePicker:2.3.22")
     // Gemini AI
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    implementation("com.firebaseui:firebase-ui-database:8.0.0")
+
 
 
 
