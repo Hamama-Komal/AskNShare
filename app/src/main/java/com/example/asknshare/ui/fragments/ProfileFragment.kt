@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.asknshare.R
@@ -18,6 +19,7 @@ import com.example.asknshare.ui.activities.BookmarkActivity
 import com.example.asknshare.ui.activities.WelcomeActivity
 import com.example.asknshare.ui.custom.CustomDialog
 import com.example.asknshare.utils.Constants
+import com.example.asknshare.viewmodels.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
@@ -26,41 +28,48 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var dataStoreHelper: DataStoreHelper
+
+    // Use the same ViewModel you’re already sharing in HomeFragment
+    private val homeVM: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View{
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        // Initialize DataStoreHelper
         dataStoreHelper = DataStoreHelper(requireContext())
 
-        fetchAndDisplayUserData()
+        setupClicks()
+        observeUserProfile()
 
+        return binding.root
+    }
+
+    private fun setupClicks() {
         binding.buttonEditProfile.setOnClickListener {
-            startActivity(Intent(context, EditProfileActivity::class.java))
+            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
 
         binding.bookmarks.setOnClickListener {
-            startActivity(Intent(context, BookmarkActivity::class.java))
+            startActivity(Intent(requireContext(), BookmarkActivity::class.java))
         }
 
         binding.logout.setOnClickListener {
             showLogoutDialog()
         }
-
-
-        return binding.root
     }
 
-    private fun fetchAndDisplayUserData() {
-        UserProfileRepo.fetchUserProfile { userData ->
+    private fun observeUserProfile() {
+        // Observe the LiveData<UserData> exposed by HomeViewModel
+        homeVM.userProfile.observe(viewLifecycleOwner) { user ->
+            // Populate username
+            binding.textViewUserName.text = user.name.orEmpty()
 
-            binding.textViewUserName.text = userData[Constants.USER_NAME] as? String ?: "Unknown User"
-
-            val profilePicUrl = userData[Constants.PROFILE_PIC] as? String
+            // Populate profile picture
+            val profilePicUrl = user.photoUrl
             if (!profilePicUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
                     .load(profilePicUrl)
@@ -70,17 +79,15 @@ class ProfileFragment : Fragment() {
                 binding.profilePicHolder.setImageResource(R.drawable.user)
             }
         }
+
+        // Trigger a fetch if you need to reload fresh data
+        homeVM.fetchAllData()
     }
 
     private fun logoutUser() {
         lifecycleScope.launch {
-            // Clear DataStore using DataStoreHelper
             dataStoreHelper.clearDataStore()
-
-            // Sign out from Firebase
             FirebaseAuth.getInstance().signOut()
-
-            // Navigate to Login Activity
             val intent = Intent(requireContext(), WelcomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -89,20 +96,15 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showLogoutDialog() {
-        val customDialog = CustomDialog(
-            context = requireContext(),
-            title = "Confirm Logout",
-            subtitle = "Are you sure you want to logout?",
-            positiveButtonText = "Logout",
-            negativeButtonText = "Cancel",
-            onPositiveClick = {
-                logoutUser() // Perform logout action
-            },
-            onNegativeClick = {
-                // Do nothing or handle cancel action
-            }
-        )
-        customDialog.show()
+        CustomDialog(
+            context             = requireContext(),
+            title               = "Confirm Logout",
+            subtitle            = "Are you sure you want to logout?",
+            positiveButtonText  = "Logout",
+            negativeButtonText  = "Cancel",
+            onPositiveClick     = { logoutUser() },
+            onNegativeClick     = { /* no-op */ }
+        ).show()
     }
 
     override fun onDestroyView() {

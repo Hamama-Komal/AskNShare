@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -26,6 +27,7 @@ import com.example.asknshare.repo.NetworkMonitor
 import com.example.asknshare.repo.UserProfileRepo
 import com.example.asknshare.ui.activities.FullViewActivity
 import com.example.asknshare.utils.Constants
+import com.example.asknshare.viewmodels.HomeViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -41,39 +43,31 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
+    private val homeVM: HomeViewModel by activityViewModels()
     private lateinit var leaderboardAdapter: LeaderboardAdapter
     private lateinit var postAdapter: PostAdapter
-    private val leaderboardList = mutableListOf<LeaderboardItem>()
-    private val postList = mutableListOf<Post>()
-
-    private var networkMonitor: NetworkMonitor? = null
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View{
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        networkMonitor = NetworkMonitor(requireContext())
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
-        monitorNetwork()
+        fetchData()
+        observeViewModel()
     }
 
-
-
     private fun setupUI() {
-        showLoader("Checking network...")
+        // show a loading spinner until data arrives
+        binding.spinKit.visibility = View.VISIBLE
 
-
-        leaderboardAdapter = LeaderboardAdapter(leaderboardList)
-        postAdapter = PostAdapter(postList)
+        leaderboardAdapter = LeaderboardAdapter(emptyList())
+        postAdapter = PostAdapter(emptyList())
 
         binding.leaderboardRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -87,137 +81,67 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchData() {
-        if (networkMonitor?.networkStatus?.value is NetworkMonitor.NetworkStatus.Disconnected) {
-            showNetworkError("No internet connection")
-            return
-        }
-
-        showLoader("Fetching data...")
-
-        fetchAndDisplayUserData()
-        loadLeaderboardData()
-        loadLatestPosts()
+        // simply ask the VM to reload everything
+        homeVM.fetchAllData()
     }
 
-    private fun fetchAndDisplayUserData() {
-        UserProfileRepo.fetchUserProfile { userData ->
-            binding.textViewUserName.text = userData[Constants.USER_NAME] as? String ?: "Unknown"
-            binding.textViewUserFullName.text = userData[Constants.FULL_NAME] as? String ?: "No Name"
-            Glide.with(requireContext())
-                .load(userData[Constants.PROFILE_PIC] as? String)
+    private fun observeViewModel() {
+        homeVM.userProfile.observe(viewLifecycleOwner) { user ->
+            binding.spinKit.visibility = View.GONE
+            binding.textViewUserName.text     = user.name.orEmpty()
+            binding.textViewUserFullName.text = user.fullName.orEmpty()
+            Glide.with(this)
+                .load(user.photoUrl)
                 .placeholder(R.drawable.user)
                 .into(binding.profilePicHolder)
         }
-    }
 
-    private fun loadLeaderboardData() {
-        FirebaseDatabase.getInstance().getReference("Leaderboard")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    leaderboardList.clear()
-                    snapshot.children.mapNotNullTo(leaderboardList) {
-                        it.getValue(LeaderboardItem::class.java)
-                    }
-                    leaderboardAdapter.notifyDataSetChanged()
-                    hideLoader()
-                }
+        homeVM.leaderboard.observe(viewLifecycleOwner) { list ->
+            leaderboardAdapter.updateList(list)
+        }
 
-                override fun onCancelled(error: DatabaseError) {
-                    showNetworkError("Failed to load leaderboard")
-                }
-            })
-    }
+        homeVM.latestPosts.observe(viewLifecycleOwner) { posts ->
+            postAdapter.updateList(posts)
+        }
 
-    private fun loadLatestPosts() {
-        FirebaseDatabase.getInstance().getReference(Constants.POSTS_NODE)
-            .orderByChild(Constants.POST_TIME).limitToLast(20)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    postList.clear()
-                    val posts = snapshot.children.mapNotNull { it.getValue(Post::class.java) }
-                    postList.addAll(posts)
-                    postAdapter.notifyDataSetChanged()
-                    displayTrendingPosts(posts.sortedByDescending { it.views }.take(5))
-                    hideLoader()
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    showNetworkError("Failed to load posts")
-                }
-            })
+        homeVM.trendingPosts.observe(viewLifecycleOwner) { trending ->
+            displayTrendingPosts(trending)
+        }
     }
 
     private fun displayTrendingPosts(posts: List<Post>) {
-        binding.viewFlipper.removeAllViews()
-        posts.forEach { post ->
-            val flipperView = TrendingQuestionItemBinding.inflate(layoutInflater).apply {
-                textViewUserFullName.text = post.postedByFullName
-                textViewUserName.text = post.postedByUsername
-                textViewPostTime.text = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date(post.timestamp))
-                postText.text = post.body
-                postTitle.text = post.heading
-                Glide.with(requireContext())
-                    .load(post.postedByProfile.takeIf { it.isNotEmpty() })
-                    .placeholder(R.drawable.user)
-                    .into(profilePicHolder)
-                root.setOnClickListener {
-                    val intent = Intent(requireContext(), FullViewActivity::class.java)
-                    intent.putExtra("postId", post.postId)
-                    startActivity(intent)
-                }
-            }
-            binding.viewFlipper.addView(flipperView.root)
-        }
-        binding.viewFlipper.isAutoStart = true
-        binding.viewFlipper.startFlipping()
-    }
-
-    private fun monitorNetwork() {
-        networkMonitor?.startMonitoring()
-        lifecycleScope.launch {
-            networkMonitor?.networkStatus?.collect { status ->
-                when (status) {
-                    is NetworkMonitor.NetworkStatus.Disconnected -> {
-                        showCustomToast(requireContext(), "No internet connection", R.drawable.ic_no_internet)
-                    }
-                    is NetworkMonitor.NetworkStatus.Connected -> {
-                        when (status.quality) {
-                            NetworkMonitor.ConnectionQuality.Slow -> {
-                                showCustomToast(requireContext(), "Slow connection detected", R.drawable.ic_warning)
-                            }
-                            NetworkMonitor.ConnectionQuality.Moderate -> {
-                                showCustomToast(requireContext(), "Moderate connection (mobile data)", R.drawable.ic_warning)
-                            }
-                            else -> {
-                                showCustomToast(requireContext(), "Connected!", R.drawable.ic_check_connection)
-                            }
+        binding.viewFlipper.apply {
+            removeAllViews()
+            posts.forEach { post ->
+                val item = TrendingQuestionItemBinding
+                    .inflate(layoutInflater)
+                    .apply {
+                        textViewUserFullName.text = post.postedByFullName
+                        textViewUserName.text     = post.postedByUsername
+                        textViewPostTime.text     = SimpleDateFormat(
+                            "dd MMM yyyy", Locale.getDefault()
+                        ).format(Date(post.timestamp))
+                        postText.text  = post.body
+                        postTitle.text = post.heading
+                        Glide.with(requireContext())
+                            .load(post.postedByProfile.takeIf { it.isNotEmpty() })
+                            .placeholder(R.drawable.user)
+                            .into(profilePicHolder)
+                        root.setOnClickListener {
+                            val intent = Intent(requireContext(), FullViewActivity::class.java)
+                            intent.putExtra("postId", post.postId)
+                            startActivity(intent)
                         }
-                        fetchData()
                     }
-                    else -> Unit
-                }
+                addView(item.root)
             }
+            isAutoStart = true
+            startFlipping()
         }
-
-    }
-
-    private fun showLoader(message: String) {
-        binding.spinKit.visibility = View.VISIBLE
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun hideLoader() {
-        binding.spinKit.visibility = View.GONE
-    }
-
-    private fun showNetworkError(message: String) {
-        binding.spinKit.visibility = View.VISIBLE
-        showCustomToast(requireContext(), message, R.drawable.ic_error)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        networkMonitor?.stopMonitoring()
         _binding = null
     }
 }
