@@ -107,6 +107,7 @@
     <string name="no_posts_found_for_this_tag">No posts found for this tag</string>
     <string name="no_bookmark_found">No Bookmark Found</string>
     <string name="reset_password">Reset Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string-array name="expertise_list">
         <item>Software Development</item>
         <item>Data Science</item>
