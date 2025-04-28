@@ -48,6 +48,16 @@ class LoginActivity : AppCompatActivity() {
         binding.textViewRegister.setOnClickListener {
             navigateToRegisterScreen()
         }
+
+        binding.textViewForgetPassword.setOnClickListener {
+            navigateToForgetPasswordScreen()
+        }
+    }
+
+    private fun navigateToForgetPasswordScreen() {
+        val intent = Intent(this@LoginActivity, ForgetPasswordActivity::class.java)
+        startActivity(intent)
+
     }
 
     private fun navigateToRegisterScreen() {

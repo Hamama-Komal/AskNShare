@@ -37,10 +37,16 @@
     <string name="interest_hobbies">Interests / Hobbies</string>
     <string name="institution_organization">Institution / Organization</string>
     <string name="location">Location</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="password_reset_email_sent">Password reset email sent to %s</string>
+    <string name="enter_valid_email">Please enter a valid email</string>
+    <string name="error_sending_reset_email">Error sending reset email. Please try again.</string>
     <string name="home">Home</string>
     <string name="ask">Ask Anything</string>
     <string name="search">Search</string>
     <string name="profile">Profile</string>
+    <string name="enter_email_to_reset_password">Enter your email to reset password</string>
+    <string name="remember_password">Remember password?</string>
     <string name="post_a_question">Post a Question</string>
     <string name="get_ai_help">Get AI Help</string>
     <string name="post_anonymously">Post Anonymously</string>
@@ -100,6 +106,7 @@
     <string name="type_a_message">Type a message</string>
     <string name="no_posts_found_for_this_tag">No posts found for this tag</string>
     <string name="no_bookmark_found">No Bookmark Found</string>
+    <string name="reset_password">Reset Password</string>
     <string-array name="expertise_list">
         <item>Software Development</item>
         <item>Data Science</item>

@@ -110,6 +110,7 @@
                 android:textCursorDrawable="@color/app_medium_blue"
                 android:textSize="@dimen/_14ssp"
                 android:fontFamily="@font/montserrat" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
