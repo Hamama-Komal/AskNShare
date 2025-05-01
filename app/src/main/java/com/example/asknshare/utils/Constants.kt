@@ -27,6 +27,7 @@ object Constants {
     const val BOOKMARKED_QUESTIONS = "bookmarked_questions"
     const val POSTED_ANSWERS = "posted_answers"
     const val POSTS_IMAGES_NODE = "post_images"
+    const val USER_SAVED_POSTS_NODE = "savedPosts"
     const val POSTS_NODE = "Posts"
     const val POSTED_BY_UID = "postedByUid"
     const val POSTED_BY_FULL_NAME = "postedByFullName"

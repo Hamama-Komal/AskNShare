@@ -3,6 +3,7 @@ package com.example.asknshare.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,10 +18,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import com.example.asknshare.databinding.ReplyItemBinding
+import com.example.asknshare.viewmodels.UserRepliesViewModel
 import com.google.firebase.database.*
 
-
-class ReplyAdapter(private val replyList: List<Reply>) : RecyclerView.Adapter<ReplyAdapter.ReplyViewHolder>() {
+class ReplyAdapter(
+    private val replyList: List<Reply>,
+    private val currentUserId: String,
+    private val viewModel: UserRepliesViewModel
+) : RecyclerView.Adapter<ReplyAdapter.ReplyViewHolder>() {
 
     inner class ReplyViewHolder(val binding: ReplyItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -33,17 +38,30 @@ class ReplyAdapter(private val replyList: List<Reply>) : RecyclerView.Adapter<Re
         val reply = replyList[position]
         val binding = holder.binding
 
+        // Highlight user's own replies
+        if (reply.replyBy == currentUserId) {
+            binding.root.setBackgroundColor(
+                ContextCompat.getColor(holder.itemView.context, R.color.blue_bg))
+        } else {
+            binding.root.setBackgroundColor(
+                ContextCompat.getColor(holder.itemView.context, R.color.grey_bg))
+        }
+
+        // Basic reply info
         binding.textViewUserName.text = reply.userName
         binding.postText.text = reply.replyText
-        binding.textViewPostTime.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date(reply.timestamp))
-        binding.upvoteText.text = reply.upVotes.toString()
-        binding.downvoteText.text = reply.downVotes.toString()
+        binding.textViewPostTime.text = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            .format(Date(reply.timestamp))
+        binding.upvoteText.text = reply.upVotes.size.toString()
+        binding.downvoteText.text = reply.downVotes.size.toString()
 
+        // User image
         Glide.with(holder.itemView.context)
             .load(reply.userProfile)
             .placeholder(R.drawable.user)
             .into(binding.profilePicHolder)
 
+        // Images in reply
         if (reply.imageList.isNotEmpty()) {
             binding.imageRecycler.visibility = View.VISIBLE
             binding.imageRecycler.layoutManager = GridLayoutManager(holder.itemView.context, 3)
@@ -52,74 +70,29 @@ class ReplyAdapter(private val replyList: List<Reply>) : RecyclerView.Adapter<Re
             binding.imageRecycler.visibility = View.GONE
         }
 
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val replyRef = FirebaseDatabase.getInstance().getReference("replies").child(reply.replyId)
+        // Vote states - using map access syntax
+        binding.upvoteIcon.setImageResource(
+            if (reply.upVotes[currentUserId] == true)
+                R.drawable.ic_selected_upvotes
+            else
+                R.drawable.ic_upvotes
+        )
+        binding.downvoteIcon.setImageResource(
+            if (reply.downVotes[currentUserId] == true)
+                R.drawable.ic_selected_downvotes
+            else
+                R.drawable.ic_downvotes
+        )
 
+        // Vote click handlers
         binding.upvoteBox.setOnClickListener {
-            updateVote(replyRef, userId, true, binding)
+            viewModel.toggleReplyVote(reply.postId, reply.replyId, currentUserId, true)
         }
 
         binding.downvoteBox.setOnClickListener {
-            updateVote(replyRef, userId, false, binding)
+            viewModel.toggleReplyVote(reply.postId, reply.replyId, currentUserId, false)
         }
     }
 
     override fun getItemCount(): Int = replyList.size
-
-    private fun updateVote(
-        replyRef: DatabaseReference,
-        userId: String,
-        isUpvote: Boolean,
-        binding: ReplyItemBinding
-    ) {
-        val upvotePath = replyRef.child("upVotes").child(userId)
-        val downvotePath = replyRef.child("downVotes").child(userId)
-
-        upvotePath.get().addOnSuccessListener { upvoteSnapshot ->
-            downvotePath.get().addOnSuccessListener { downvoteSnapshot ->
-
-                if (isUpvote) {
-                    if (upvoteSnapshot.exists()) {
-                        upvotePath.removeValue()  // Remove upvote
-                        binding.upvoteIcon.setImageResource(R.drawable.ic_upvotes)
-                    } else {
-                        upvotePath.setValue(true)  // Add upvote
-                        downvotePath.removeValue()  // Remove downvote if exists
-                        binding.upvoteIcon.setImageResource(R.drawable.ic_selected_upvotes)
-                        binding.downvoteIcon.setImageResource(R.drawable.ic_downvotes)
-                    }
-                } else {
-                    if (downvoteSnapshot.exists()) {
-                        downvotePath.removeValue()  // Remove downvote
-                        binding.downvoteIcon.setImageResource(R.drawable.ic_selected_downvotes)
-                    } else {
-                        downvotePath.setValue(true)  // Add downvote
-                        upvotePath.removeValue()  // Remove upvote if exists
-                        binding.downvoteIcon.setImageResource(R.drawable.ic_selected_downvotes)
-                        binding.upvoteIcon.setImageResource(R.drawable.ic_upvotes)
-                    }
-                }
-
-                updateVoteCounts(replyRef, binding)  // Update UI vote counts
-            }
-        }
-    }
-
-    private fun updateVoteCounts(replyRef: DatabaseReference, binding: ReplyItemBinding) {
-        replyRef.child("upVotes").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                binding.upvoteText.text = snapshot.childrenCount.toString()
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
-
-        replyRef.child("downVotes").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                binding.downvoteText.text = snapshot.childrenCount.toString()
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
-    }
 }
-
-

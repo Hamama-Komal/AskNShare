@@ -34,6 +34,9 @@ import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 import java.util.UUID
 import android.Manifest
+import androidx.activity.viewModels
+import com.example.asknshare.viewmodels.UserPostsViewModel
+
 
 class PostQuestionActivity : AppCompatActivity() {
 
@@ -44,7 +47,7 @@ class PostQuestionActivity : AppCompatActivity() {
     private lateinit var tagAdapter: TagAdapter
     private var capturedImageUri: Uri? = null
     private var isAnonymousPost: Boolean = false
-
+    private val userPostsViewModel: UserPostsViewModel by viewModels()
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -63,6 +66,7 @@ class PostQuestionActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.app_light_blue)
 
         isAnonymousPost = intent.getBooleanExtra("isAnonymous", false)
+
 
 
 
@@ -125,6 +129,7 @@ class PostQuestionActivity : AppCompatActivity() {
             finish()
         }
 
+
         binding.buttonPublishPost.setOnClickListener {
             val title = binding.questionTitle.text.toString().trim()
             val body = binding.questionDescription.text.toString().trim()
@@ -139,7 +144,6 @@ class PostQuestionActivity : AppCompatActivity() {
 
 
         }
-
 
         binding.buttonDiscard.setOnClickListener{
             showDiscardDialog()
@@ -280,7 +284,7 @@ class PostQuestionActivity : AppCompatActivity() {
     }
 
 
-    private fun fetchUserDataAndSavePost(imageUrls: Map<String, String>) {
+ /*   private fun fetchUserDataAndSavePost(imageUrls: Map<String, String>) {
         if (isAnonymousPost) {
             // Use dummy anonymous data
             val anonymousId = "anonymous_${System.currentTimeMillis()}"
@@ -349,7 +353,96 @@ class PostQuestionActivity : AppCompatActivity() {
                 Toast.makeText(this@PostQuestionActivity, "Failed to upload post!", Toast.LENGTH_SHORT).show()
             }
     }
+*/
 
+
+    private fun fetchUserDataAndSavePost(imageUrls: Map<String, String>) {
+        if (isAnonymousPost) {
+            // Use dummy anonymous data
+            val anonymousId = "anonymous_${System.currentTimeMillis()}"
+            savePostToDatabase(
+                userId = anonymousId,
+                fullName = "Anonymous",
+                profileImage = "",
+                username = "Anonymous",
+                imageUrls = imageUrls
+            )
+        } else {
+            // Normal fetch
+            UserProfileRepo.fetchUserProfile { userData ->
+                if (userData.isEmpty()) {
+                    Toast.makeText(this@PostQuestionActivity, "User data not found!", Toast.LENGTH_SHORT).show()
+                    return@fetchUserProfile
+                }
+
+                val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
+                val fullName = userData[Constants.FULL_NAME] as? String ?: "Unknown"
+                val profileImage = userData[Constants.PROFILE_PIC] as? String ?: ""
+                val username = userData[Constants.USER_NAME] as? String ?: "anonymous"
+                val userEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
+
+                savePostToDatabase(userId, fullName, profileImage, username, imageUrls, userEmail)
+            }
+        }
+    }
+
+    // Modified function to save the post to Firebase
+    private fun savePostToDatabase(
+        userId: String,
+        fullName: String,
+        profileImage: String,
+        username: String,
+        imageUrls: Map<String, String>,
+        userEmail: String = "" // Default empty for anonymous posts
+    ) {
+        val postId = FirebaseDatabase.getInstance().reference.child(Constants.POSTS_NODE).push().key ?: return
+
+        val post = mapOf(
+            Constants.POST_ID to postId,
+            Constants.POSTED_BY_UID to userId,
+            Constants.POSTED_BY_FULL_NAME to fullName,
+            Constants.POSTED_BY_PROFILE to profileImage,
+            Constants.POSTED_BY_USERNAME to username,
+            Constants.POST_HEADING to binding.questionTitle.text.toString().trim(),
+            Constants.POST_BODY to binding.questionDescription.text.toString().trim(),
+            Constants.POST_IMAGES to imageUrls,
+            Constants.POST_TIME to System.currentTimeMillis(),
+            Constants.POST_UP_VOTES to emptyMap<String, Boolean>(),
+            Constants.POST_DOWN_VOTES to emptyMap<String, Boolean>(),
+            Constants.POST_VIEWS to 0,
+            Constants.POST_BOOKMARKS to emptyMap<String, Boolean>(),
+            Constants.POST_REPLIES to emptyMap<String, Any>(),
+            Constants.POST_TAGS to tagViewModel.tags.value.orEmpty()
+        )
+
+        FirebaseDatabase.getInstance().reference.child(Constants.POSTS_NODE).child(postId).setValue(post)
+            .addOnSuccessListener {
+                if (!isAnonymousPost && userEmail.isNotEmpty()) {
+                    userPostsViewModel.markPostAsPosted(
+                        postId = postId,
+                        currentUserEmail = userEmail,
+                        onComplete = { success ->
+                            showLoading(false)
+                            if (success) {
+                                Toast.makeText(this, "Post uploaded successfully!", Toast.LENGTH_SHORT).show()
+                                finish()
+                            } else {
+                                Toast.makeText(this, "Post uploaded but failed to update user history!", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+                        }
+                    )
+                } else {
+                    showLoading(false)
+                    Toast.makeText(this, "Post uploaded successfully!", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+            .addOnFailureListener {
+                showLoading(false)
+                Toast.makeText(this, "Failed to upload post!", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
@@ -365,5 +458,7 @@ class PostQuestionActivity : AppCompatActivity() {
             window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
     }
+
+
 
 }

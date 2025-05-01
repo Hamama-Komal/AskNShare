@@ -85,9 +85,10 @@ class ReplyBottomSheetDialog : BottomSheetDialogFragment() {
                         userProfile = userProfile,
                         replyText = replyBody,
                         timestamp = System.currentTimeMillis(),
-                        upVotes = 0,
-                        downVotes = 0,
-                        imageList = listOf()
+                        upVotes = emptyMap(),
+                        downVotes = emptyMap(),
+                        imageList = listOf(),
+                        postId = postId
                     )
 
                     database.child(Constants.POSTS_NODE).child(postId).child("replies").child(replyId)

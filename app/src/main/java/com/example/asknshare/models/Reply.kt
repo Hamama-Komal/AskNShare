@@ -7,7 +7,8 @@ data class Reply(
     val userProfile: String = "",
     val replyText: String = "",
     val timestamp: Long = System.currentTimeMillis(),
-    var upVotes: Int = 0,
-    var downVotes: Int = 0,
-    val imageList: List<String> = emptyList()
+    val upVotes: Map<String, Boolean> = emptyMap(),
+    val downVotes: Map<String, Boolean> = emptyMap(),
+    val imageList: List<String> = emptyList(),
+    var postId: String = ""
 )

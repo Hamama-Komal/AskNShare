@@ -6,6 +6,9 @@
     <color name="red">#FF0808</color>
     <color name="light_grey">#828288</color>
     <color name="dark_grey">#455A64</color>
+    <color name="grey_bg">#E7F4F4F2</color>
+    <color name="blue_bg">#C5E6F0</color>
+
 
     <!-- App Main Colors -->
     <color name="app_grey">#D9DCD6</color>
