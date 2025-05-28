@@ -51,7 +51,7 @@
         <activity
             android:name=".ui.activities.AIChatActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize"  />
         <activity
             android:name=".ui.activities.FullViewActivity"
             android:exported="false" />

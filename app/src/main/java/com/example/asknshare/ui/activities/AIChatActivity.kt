@@ -44,7 +44,7 @@ class AIChatActivity : AppCompatActivity() {
         }
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.app_light_blue)
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        //window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         chatAdapter = ChatAdapter(mutableListOf())
         binding.rvChat.apply {
