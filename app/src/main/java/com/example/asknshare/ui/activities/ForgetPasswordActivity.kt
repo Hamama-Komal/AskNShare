@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.asknshare.R
 import com.example.asknshare.databinding.ActivityForgetPasswordBinding
+import com.example.asknshare.utils.Constants
 import com.example.asknshare.viewmodels.ForgotPasswordUiState
 import com.example.asknshare.viewmodels.ForgotPasswordViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -19,6 +20,7 @@ class ForgetPasswordActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityForgetPasswordBinding
     private val viewModel: ForgotPasswordViewModel by viewModels()
+    private var isResetPasswordFlow = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +33,25 @@ class ForgetPasswordActivity : AppCompatActivity() {
             insets
         }
 
+        // Check intent for flow type
+        isResetPasswordFlow = intent.getBooleanExtra(Constants.RESET_PASSWORD_KEY, true)
+        updateUITitles()
+
+
         setupListeners()
         observeViewModel()
+    }
+
+    private fun updateUITitles() {
+        if (isResetPasswordFlow) {
+            binding.textViewTitle.text = getString(R.string.reset_password)
+            binding.textViewDescription.text = getString(R.string.enter_email_to_reset_password)
+            binding.resetPasswordButton.text = getString(R.string.reset_password)
+        } else {
+            binding.textViewTitle.text = getString(R.string.forgot_password)
+            binding.textViewDescription.text = getString(R.string.enter_email_to_recover_password)
+            binding.resetPasswordButton.text = getString(R.string.recover_password)
+        }
     }
 
     private fun setupListeners() {

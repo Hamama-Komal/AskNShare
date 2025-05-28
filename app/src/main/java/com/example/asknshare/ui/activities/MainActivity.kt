@@ -2,6 +2,7 @@ package com.example.asknshare.ui.activities
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.asknshare.R
 import com.example.asknshare.databinding.ActivityMainBinding
 import com.example.asknshare.repo.NetworkMonitor
+import com.example.asknshare.ui.custom.CustomDialog
 import com.example.asknshare.ui.fragments.AskFragment
 import com.example.asknshare.ui.fragments.HomeFragment
 import com.example.asknshare.ui.fragments.ProfileFragment
@@ -61,6 +63,16 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+
+        // onBackPress function
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showExitConfirmationDialog()
+            }
+        })
+
+
+
         // Network Monitoring
         networkMonitor = NetworkMonitor(this)
         networkMonitor.startMonitoring()
@@ -96,6 +108,20 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    private fun showExitConfirmationDialog() {
+        CustomDialog(
+            context = this,
+            title = "Exit App",
+            subtitle = "Are you sure you want to exit?",
+            positiveButtonText = "Yes",
+            negativeButtonText = "No",
+            onPositiveClick = {
+                finishAffinity()
+            },
+            onNegativeClick = {
+            }
+        ).show()
+    }
 
 
 }

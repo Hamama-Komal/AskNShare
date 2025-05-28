@@ -45,6 +45,8 @@
     <string name="ask">Ask Anything</string>
     <string name="search">Search</string>
     <string name="profile">Profile</string>
+    <string name="enter_email_to_recover_password">Enter your email to recover your password</string>
+    <string name="recover_password">Recover Password</string>
     <string name="enter_email_to_reset_password">Enter your email to reset password</string>
     <string name="remember_password">Remember password?</string>
     <string name="post_a_question">Post a Question</string>
@@ -108,6 +110,14 @@
     <string name="no_bookmark_found">No Bookmark Found</string>
     <string name="reset_password">Reset Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="see_more">See More</string>
+    <string name="about">About</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="support">Support</string>
+    <string name="change_password">Change Password</string>
+    <string name="account">Account</string>
+    <string name="enable_notifications">Enable Notifications</string>
+    <string name="dark_mode">Dark Mode</string>
     <string-array name="expertise_list">
         <item>Software Development</item>
         <item>Data Science</item>

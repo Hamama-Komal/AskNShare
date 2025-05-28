@@ -6,22 +6,32 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.asknshare.R
 import com.example.asknshare.databinding.ActivityBookmarkBinding
 import com.example.asknshare.models.Post
+import com.example.asknshare.models.Reply
 import com.example.asknshare.ui.adapters.PostAdapter
+import com.example.asknshare.ui.adapters.ReplyAdapter
 import com.example.asknshare.viewmodels.BookmarkViewModel
+import com.example.asknshare.viewmodels.UserPostsViewModel
+import com.example.asknshare.viewmodels.UserRepliesViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class BookmarkActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBookmarkBinding
-    private val viewModel: BookmarkViewModel by viewModels()
+    private val bookmarkVM: BookmarkViewModel by viewModels()
+    private val userPostsVM: UserPostsViewModel by viewModels()
+    private val userRepliesVM: UserRepliesViewModel by viewModels()
+
     private lateinit var postAdapter: PostAdapter
+    private lateinit var replyAdapter: ReplyAdapter
     private val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email ?: ""
+    private var contentType: String = "bookmarks"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,48 +44,103 @@ class BookmarkActivity : AppCompatActivity() {
             insets
         }
 
-        setupToolbar()
+        window.statusBarColor = ContextCompat.getColor(this, R.color.app_grey)
+        // Get the content type from intent
+        contentType = intent.getStringExtra("content_type") ?: "bookmarks"
+
+        setTopTitle()
         setupRecyclerView()
         setupObservers()
-        loadBookmarks()
+        loadContent()
     }
 
-
-    private fun setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+    private fun setTopTitle() {
+        when (contentType) {
+            "bookmarks" -> binding.titleText.text = "Your Bookmarks"
+            "questions" -> binding.titleText.text= "Your Questions"
+            "answers" -> binding.titleText.text= "Your Answers"
         }
     }
 
     private fun setupRecyclerView() {
-        // Initialize with empty list, will be updated when data loads
         postAdapter = PostAdapter(emptyList())
+        replyAdapter = ReplyAdapter(
+            emptyList(),
+            currentUserId = currentUserEmail,
+            viewModel = userRepliesVM
+        )
 
         binding.recyclerBookmarks.apply {
             layoutManager = LinearLayoutManager(this@BookmarkActivity)
-            adapter = postAdapter
             setHasFixedSize(true)
         }
-
-
     }
 
     private fun setupObservers() {
-        viewModel.bookmarkedPosts.observe(this) { posts ->
-            binding.spinKit.visibility = View.GONE
-            postAdapter.updateList(posts)
+        when (contentType) {
+            "bookmarks" -> {
+                bookmarkVM.bookmarkedPosts.observe(this) { posts ->
+                    handlePostsResult(posts)
+                }
+                bookmarkVM.isLoading.observe(this) { isLoading ->
+                    handleLoadingState(isLoading)
+                }
+            }
+            "questions" -> {
+                userPostsVM.userPosts.observe(this) { posts ->
+                    if (posts.isEmpty()) {
+                        showEmptyState()
+                    } else {
+                        postAdapter.updateList(posts)
+                        binding.recyclerBookmarks.adapter = postAdapter
+                        showContentState()
+                    }
+                }
+                userPostsVM.isLoading.observe(this) { isLoading ->
+                    handleLoadingState(isLoading)
+                }
 
-            if (posts.isEmpty()) {
-                showEmptyState()
-            } else {
-                showBookmarkedPosts(posts)
+                // Fetch user's questions when the activity starts
+                userPostsVM.fetchUserPosts(currentUserEmail)
+            }
+            "answers" -> {
+                userRepliesVM.userReplies.observe(this) { replies ->
+                    if (replies.isEmpty()) {
+                        showEmptyState()
+                    } else {
+                        replyAdapter.updateList(replies)
+                        binding.recyclerBookmarks.adapter = replyAdapter
+                        showContentState()
+                    }
+                }
+                userRepliesVM.isLoading.observe(this) { isLoading ->
+                    handleLoadingState(isLoading)
+                }
             }
         }
+    }
 
-        viewModel.isLoading.observe(this) { isLoading ->
-            if (isLoading) {
-                showLoadingState()
-            }
+    private fun handlePostsResult(posts: List<Post>) {
+        if (posts.isEmpty()) {
+            showEmptyState()
+        } else {
+            postAdapter.updateList(posts)
+            binding.recyclerBookmarks.adapter = postAdapter
+            showContentState()
+        }
+    }
+
+    private fun handleLoadingState(isLoading: Boolean) {
+        if (isLoading) {
+            showLoadingState()
+        }
+    }
+
+    private fun loadContent() {
+        when (contentType) {
+            "bookmarks" -> bookmarkVM.fetchBookmarkedPosts(currentUserEmail)
+            "questions" -> userPostsVM.fetchUserPosts(currentUserEmail)
+            "answers" -> userRepliesVM.fetchUserReplies(currentUserEmail)
         }
     }
 
@@ -86,23 +151,26 @@ class BookmarkActivity : AppCompatActivity() {
     }
 
     private fun showEmptyState() {
+
         binding.noBookmarksContainer.visibility = View.VISIBLE
         binding.recyclerBookmarks.visibility = View.GONE
         binding.spinKit.visibility = View.GONE
+
+        // Update empty state message based on content type
+        binding.noBookmarksText.text = when (contentType) {
+            "bookmarks" -> "You haven't bookmarked any posts yet"
+            "questions" -> "You haven't asked any questions yet"
+            "answers" -> "You haven't answered any questions yet"
+            else -> "No content found"
+        }
     }
 
-    private fun showBookmarkedPosts(posts: List<Post>) {
+    private fun showContentState() {
         binding.noBookmarksContainer.visibility = View.GONE
         binding.recyclerBookmarks.visibility = View.VISIBLE
         binding.spinKit.visibility = View.GONE
-
-        // Update the adapter with new data
-        postAdapter = PostAdapter(posts)
-        binding.recyclerBookmarks.adapter = postAdapter
-    }
-
-    private fun loadBookmarks() {
-        viewModel.fetchBookmarkedPosts(currentUserEmail)
     }
 
 }
+
+private fun ReplyAdapter.updateList(replies: kotlin.collections.List<com.example.asknshare.models.Reply>) {}

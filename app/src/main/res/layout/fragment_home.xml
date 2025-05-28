@@ -156,15 +156,39 @@
                     android:layout_marginHorizontal="5dp"
                     android:layout_marginTop="8dp" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="12dp"
                     android:layout_marginTop="16dp"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="@string/latest_questions"
-                    android:textColor="@color/app_dark_blue"
-                    android:textSize="@dimen/_16ssp" />
+                    android:weightSum="3"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/latest_questions"
+                        android:textColor="@color/app_dark_blue"
+                        android:textSize="@dimen/_16ssp" />
+
+
+                    <TextView
+                        android:id="@+id/text_see_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="12dp"
+                        android:textAlignment="viewEnd"
+                        android:fontFamily="@font/montserrat"
+                        android:text="@string/see_more"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/_12ssp" />
+
+                </LinearLayout>
+
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/latest_question_recycler"

@@ -62,7 +62,10 @@ class FullViewActivity : AppCompatActivity() {
 
         setupObservers()
 
+        showLoading(true)
+
         val postId = intent.getStringExtra("postId") ?: run {
+            showLoading(false)
             Toast.makeText(this, "Error: Post not found!", Toast.LENGTH_SHORT).show()
             finish()
             return
@@ -144,12 +147,14 @@ class FullViewActivity : AppCompatActivity() {
         postRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val post = snapshot.getValue(Post::class.java) ?: run {
+                    showLoading(false)
                     Toast.makeText(this@FullViewActivity, "Post not found", Toast.LENGTH_SHORT).show()
                     finish()
                     return
                 }
 
                 currentPost = post
+                showLoading(false)
                 displayPostDetails(post)
                 incrementViewCount()
 
@@ -220,6 +225,21 @@ class FullViewActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.spinKit.visibility = View.VISIBLE
+            // Disable user interaction
+            window.setFlags(
+                android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+        } else {
+            binding.spinKit.visibility = View.GONE
+            // Enable user interaction
+            window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
     }
 }
 

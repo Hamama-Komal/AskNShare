@@ -46,6 +46,12 @@ object Constants {
     const val POST_ID = "postId"
 
 
+    const val KEY_DARK_MODE = "dark_mode"
+    const val KEY_NOTIFICATIONS = "notifications"
+    const val RESET_PASSWORD_KEY = "is_reset_password"
+
+
+
 
 
 

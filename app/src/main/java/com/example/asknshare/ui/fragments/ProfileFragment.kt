@@ -16,6 +16,7 @@ import com.example.asknshare.ui.activities.EditProfileActivity
 import com.example.asknshare.databinding.FragmentProfileBinding
 import com.example.asknshare.repo.UserProfileRepo
 import com.example.asknshare.ui.activities.BookmarkActivity
+import com.example.asknshare.ui.activities.SettingActivity
 import com.example.asknshare.ui.activities.WelcomeActivity
 import com.example.asknshare.ui.custom.CustomDialog
 import com.example.asknshare.utils.Constants
@@ -30,8 +31,6 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var dataStoreHelper: DataStoreHelper
-
-    // Use the same ViewModel you’re already sharing in HomeFragment
     private val homeVM: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -49,12 +48,42 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupClicks() {
+
         binding.buttonEditProfile.setOnClickListener {
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
 
         binding.bookmarks.setOnClickListener {
-            startActivity(Intent(requireContext(), BookmarkActivity::class.java))
+            startActivity(
+                Intent(requireContext(), BookmarkActivity::class.java).apply {
+                    putExtra("content_type", "bookmarks")
+                }
+            )
+        }
+
+
+        binding.notifications.setOnClickListener {
+            showNotificationsDialog()
+        }
+
+        binding.questions.setOnClickListener {
+            startActivity(
+                Intent(requireContext(), BookmarkActivity::class.java).apply {
+                    putExtra("content_type", "questions")
+                }
+            )
+        }
+
+        binding.answers.setOnClickListener {
+            startActivity(
+                Intent(requireContext(), BookmarkActivity::class.java).apply {
+                    putExtra("content_type", "answers")
+                }
+            )
+        }
+
+        binding.settings.setOnClickListener {
+            startActivity(Intent(requireContext(), SettingActivity::class.java))
         }
 
         binding.logout.setOnClickListener {
@@ -83,6 +112,28 @@ class ProfileFragment : Fragment() {
         // Trigger a fetch if you need to reload fresh data
         homeVM.fetchAllData()
     }
+
+    private fun showNotificationsDialog() {
+        CustomDialog(
+            context = requireContext(),
+            title = "Notifications",
+            subtitle = "Would you like to enable or manage notifications?",
+            positiveButtonText = "Manage",
+            negativeButtonText = "Cancel",
+            onPositiveClick = {
+                // Toast.makeText(requireContext(), "Navigating to Notification Settings", Toast.LENGTH_SHORT).show()
+                val intent = Intent().apply {
+                    action = android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
+                    putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+                }
+                startActivity(intent)
+            },
+            onNegativeClick = {
+                // No action needed
+            }
+        ).show()
+    }
+
 
     private fun logoutUser() {
         lifecycleScope.launch {
