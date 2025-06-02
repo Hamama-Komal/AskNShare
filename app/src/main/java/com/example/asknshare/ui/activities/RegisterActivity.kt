@@ -22,6 +22,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var auth: FirebaseAuth
     private var isPasswordVisible = false
+    private var isConfirmPasswordVisible = false
     private lateinit var dataStoreHelper: DataStoreHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,24 +47,25 @@ class RegisterActivity : AppCompatActivity() {
             togglePasswordVisibility()
         }
 
+        binding.InputConfirmPasswordLayout.setEndIconOnClickListener {
+            toggleConfirmPasswordVisibility()
+        }
+
         binding.textViewLogin.setOnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(intent)
             finishAffinity()
         }
-
-
-
     }
 
     private fun registerUser() {
-        val username = binding.textfieldUsername.text.toString().trim()
         val email = binding.textfieldEmail.text.toString().trim()
         val password = binding.textfieldPassword.text.toString().trim()
+        val confirmPassword = binding.textfieldConfirmPassword.text.toString().trim()
         val isTermsChecked = binding.checkboxTerms.isChecked
 
         // Validate input fields
-        if (!validateInput(username, email, password, isTermsChecked)) {
+        if (!validateInput(email, password, confirmPassword, isTermsChecked)) {
             return
         }
 
@@ -73,7 +75,7 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
             showLoading(false)
             if (task.isSuccessful) {
-                handleRegistrationSuccess(email, username)
+                handleRegistrationSuccess(email)
             } else {
                 handleRegistrationFailure(task.exception?.message)
             }
@@ -81,21 +83,21 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun validateInput(
-        username: String,
         email: String,
         password: String,
+        confirmPassword: String,
         isTermsChecked: Boolean
     ): Boolean {
-        if (!isValidUsername(username)) {
-            binding.textfieldUsername.error = "Username must contain only letters and numbers"
-            return false
-        }
         if (!isValidEmail(email)) {
             binding.textfieldEmail.error = "Enter a valid email"
             return false
         }
         if (!isValidPassword(password)) {
             binding.textfieldPassword.error = "Password must be at least 7 characters long"
+            return false
+        }
+        if (password != confirmPassword) {
+            binding.textfieldConfirmPassword.error = "Passwords don't match"
             return false
         }
         if (!isTermsChecked) {
@@ -105,16 +107,15 @@ class RegisterActivity : AppCompatActivity() {
         return true
     }
 
-    private fun handleRegistrationSuccess(email: String, username: String) {
+    private fun handleRegistrationSuccess(email: String) {
         lifecycleScope.launch {
-            // Save registration status, email, and username
+            // Save registration status and email
             dataStoreHelper.saveUserRegistrationStatus(true)
             dataStoreHelper.saveUserEmail(email)
-            dataStoreHelper.saveUsername(username)
         }
         Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
 
-        // Navigate to the next activity without passing data via Intent
+        // Navigate to the next activity
         val intent = Intent(this@RegisterActivity, SetUpProfileActivity::class.java)
         startActivity(intent)
         finishAffinity()
@@ -124,11 +125,6 @@ class RegisterActivity : AppCompatActivity() {
         Toast.makeText(
             this, "Registration failed: $errorMessage", Toast.LENGTH_LONG
         ).show()
-    }
-
-    private fun isValidUsername(username: String): Boolean {
-        val regex = "^[a-zA-Z0-9]+$".toRegex()
-        return username.matches(regex)
     }
 
     private fun isValidEmail(email: String): Boolean {
@@ -150,9 +146,19 @@ class RegisterActivity : AppCompatActivity() {
         }
         isPasswordVisible = !isPasswordVisible
         binding.textfieldPassword.setSelection(binding.textfieldPassword.text?.length ?: 0)
+    }
 
-        // Log the current state for debugging
-        println("Password visibility toggled. isPasswordVisible: $isPasswordVisible")
+    private fun toggleConfirmPasswordVisibility() {
+        if (isConfirmPasswordVisible) {
+            binding.textfieldConfirmPassword.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.InputConfirmPasswordLayout.endIconDrawable = getDrawable(R.drawable.ic_visible)
+        } else {
+            binding.textfieldConfirmPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            binding.InputConfirmPasswordLayout.endIconDrawable = getDrawable(R.drawable.ic_hide)
+        }
+        isConfirmPasswordVisible = !isConfirmPasswordVisible
+        binding.textfieldConfirmPassword.setSelection(binding.textfieldConfirmPassword.text?.length ?: 0)
     }
 
     private fun showLoading(isLoading: Boolean) {

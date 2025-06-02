@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.asknshare.R
 import com.example.asknshare.databinding.ActivityLoginBinding
+import com.example.asknshare.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
@@ -48,6 +49,16 @@ class LoginActivity : AppCompatActivity() {
         binding.textViewRegister.setOnClickListener {
             navigateToRegisterScreen()
         }
+
+        binding.textViewForgetPassword.setOnClickListener {
+            navigateToForgetPasswordScreen()
+        }
+    }
+
+    private fun navigateToForgetPasswordScreen() {
+        val intent = Intent(this, ForgetPasswordActivity::class.java)
+        intent.putExtra(Constants.RESET_PASSWORD_KEY, false)
+        startActivity(intent)
     }
 
     private fun navigateToRegisterScreen() {

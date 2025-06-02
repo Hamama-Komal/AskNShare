@@ -9,8 +9,13 @@ import com.example.asknshare.R
 import com.example.asknshare.databinding.LeaderboardRecyclerItemBinding
 import com.example.asknshare.models.LeaderboardItem
 
-class LeaderboardAdapter(private val leaderboardList: List<LeaderboardItem>) :
+class LeaderboardAdapter(private var leaderboardList: List<LeaderboardItem>) :
     RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>() {
+
+    fun updateList(newItems: List<LeaderboardItem>) {
+        leaderboardList = newItems
+        notifyDataSetChanged()
+    }
 
     inner class LeaderboardViewHolder(private val binding: LeaderboardRecyclerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

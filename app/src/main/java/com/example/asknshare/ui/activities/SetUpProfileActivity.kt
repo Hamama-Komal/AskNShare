@@ -177,7 +177,7 @@ class SetUpProfileActivity : AppCompatActivity() {
             Constants.GENDER to gender,
             Constants.ORGANIZATION to organization,
             Constants.BIO to bio,
-            Constants.BOOKMARKED_QUESTIONS to emptyMap<String, Boolean>(), // Initialize as empty
+            Constants.BOOKMARKED_QUESTIONS to emptyMap<String, Boolean>(),
             Constants.POSTED_ANSWERS to emptyMap<String, Boolean>(),
             Constants.POSTED_QUESTIONS to emptyMap<String, Boolean>(),
         )

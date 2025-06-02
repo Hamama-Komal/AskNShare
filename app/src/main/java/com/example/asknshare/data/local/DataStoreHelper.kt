@@ -64,5 +64,20 @@ class DataStoreHelper(private val context: Context) {
             preferences.clear()
         }
     }
+
+    suspend fun saveBooleanPreference(key: String, value: Boolean) {
+        val preferenceKey = booleanPreferencesKey(key)
+        context.dataStore.edit { preferences ->
+            preferences[preferenceKey] = value
+        }
+    }
+
+    fun getBooleanPreference(key: String, defaultValue: Boolean): Flow<Boolean> {
+        val preferenceKey = booleanPreferencesKey(key)
+        return context.dataStore.data
+            .map { preferences ->
+                preferences[preferenceKey] ?: defaultValue
+            }
+    }
 }
 

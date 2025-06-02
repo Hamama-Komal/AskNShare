@@ -67,99 +67,21 @@
         app:boxBackgroundMode="filled"
         app:boxStrokeColor="@color/app_medium_blue"
         app:boxStrokeWidth="3dp"
-        app:hintEnabled="true"
+        app:hintEnabled="false"
         app:hintTextColor="@color/app_medium_blue"
         app:startIconDrawable="@drawable/ic_role">
+
         <AutoCompleteTextView
             android:id="@+id/textfield_role"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:paddingVertical="12dp"
+            android:paddingVertical="15dp"
             android:hint="@string/profession_role"
             android:inputType="text"
             android:textColor="@color/black"
             android:textCursorDrawable="@color/app_medium_blue"
             android:textSize="@dimen/_14ssp" />
     </com.google.android.material.textfield.TextInputLayout>
-    <!--  <com.google.android.material.textfield.TextInputLayout
-          style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginVertical="8dp"
-          app:boxBackgroundColor="#2EFFFFFF"
-          app:boxBackgroundMode="filled"
-          app:boxStrokeColor="@color/app_medium_blue"
-          app:boxStrokeWidth="3dp"
-          app:hintEnabled="true"
-          app:hintTextColor="@color/app_medium_blue"
-          app:startIconDrawable="@drawable/ic_calender">
-
-          <com.google.android.material.textfield.TextInputEditText
-              android:id="@+id/textfield_dob"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:hint="@string/dob"
-              android:inputType="text"
-              android:textColor="@color/black"
-              android:textCursorDrawable="@color/app_medium_blue"
-              android:textSize="@dimen/_14ssp"
-              android:fontFamily="@font/montserrat" />
-      </com.google.android.material.textfield.TextInputLayout>
-
-      <com.google.android.material.textfield.TextInputLayout
-          style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginVertical="8dp"
-          app:boxBackgroundColor="#2EFFFFFF"
-          app:boxBackgroundMode="filled"
-          app:boxStrokeColor="@color/app_medium_blue"
-          app:boxStrokeWidth="3dp"
-          app:hintEnabled="true"
-          app:hintTextColor="@color/app_medium_blue"
-          app:startIconDrawable="@drawable/ic_gender">
-
-          <com.google.android.material.textfield.TextInputEditText
-              android:id="@+id/textfield_gender"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:hint="@string/gender"
-              android:inputType="text"
-              android:textColor="@color/black"
-              android:textCursorDrawable="@color/app_medium_blue"
-              android:textSize="@dimen/_14ssp"
-              android:fontFamily="@font/montserrat" />
-      </com.google.android.material.textfield.TextInputLayout>
-
-      <com.google.android.material.textfield.TextInputLayout
-          style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginVertical="8dp"
-          android:maxWidth="200dp"
-          app:counterMaxLength="500"
-          app:boxBackgroundColor="#2EFFFFFF"
-          app:boxBackgroundMode="filled"
-          app:boxStrokeColor="@color/app_medium_blue"
-          app:boxStrokeWidth="3dp"
-          app:hintEnabled="true"
-          app:hintTextColor="@color/app_medium_blue"
-          app:startIconDrawable="@drawable/ic_gender">
-
-          <com.google.android.material.textfield.TextInputEditText
-              android:id="@+id/textfield_bio"
-              android:layout_width="match_parent"
-              android:layout_height="80dp"
-              android:hint="@string/bio"
-              android:textAlignment="viewStart"
-              android:inputType="text"
-              android:maxLines="4"
-              android:textColor="@color/black"
-              android:textCursorDrawable="@color/app_medium_blue"
-              android:textSize="@dimen/_14ssp"
-              android:fontFamily="@font/montserrat" />
-      </com.google.android.material.textfield.TextInputLayout>
-  -->
 
 </LinearLayout>
